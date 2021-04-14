@@ -1,4 +1,3 @@
-import { useState } from "react";
 import Select from "react-select";
 
 export default function Searchbar({
@@ -46,11 +45,16 @@ export default function Searchbar({
   ];
   return (
     <div>
-      <Select options={breeds} onChange={handleBreedChange} />
-      <Select options={colors} onChange={handleColorChange} />
-      <Select options={ages} onChange={handleAgeChange} />
-      <Select options={sexes} onChange={handleSexChange} />
-      <Select options={attributes} onChange={handleAttributeChange} />
+      <Select options={breeds} onChange={handleBreedChange} isClearable />
+      <Select options={colors} onChange={handleColorChange} isClearable />
+      <Select options={ages} onChange={handleAgeChange} isClearable />
+      <Select options={sexes} onChange={handleSexChange} isClearable />
+      <Select
+        options={attributes}
+        onChange={handleAttributeChange}
+        isClearable
+        isMulti
+      />
     </div>
   );
 }

@@ -18,20 +18,37 @@ export default function Cats({
     }
   };
   const compareAttributes = (attributesParam) => {
-    console.log("attributes: ", attributesParam);
     return attributesParam
       .map((attribute) => attribute.AttributeName)
-      .some((attribute) => attributes.includes(attribute));
+      .some((attribute) => attributes.map((i) => i.value).includes(attribute));
   };
+
   return (
     <div>
       {cats
-        .filter((cat) => cat.Breed === "Domestic " + breeds || breeds === "Any")
-        .filter((cat) => cat.Color === colors || colors === "Any")
-        .filter((cat) => convertAge(cat.Age) === ages || ages === "Any")
-        .filter((cat) => cat.Sex === sexes || sexes === "Any")
         .filter(
-          (cat) => compareAttributes(cat.Attributes) || attributes === "Any"
+          (cat) =>
+            breeds === null ||
+            cat.Breed === (breeds !== null ? "Domestic " + breeds.value : "")
+        )
+        .filter(
+          (cat) =>
+            colors === null ||
+            cat.Color === (colors !== null ? colors.value : "")
+        )
+        .filter(
+          (cat) =>
+            ages === null ||
+            convertAge(cat.Age) === (ages !== null ? ages.value : "")
+        )
+        .filter(
+          (cat) =>
+            sexes === null || cat.Sex === (sexes !== null ? sexes.value : "")
+        )
+        .filter(
+          (cat) =>
+            attributes.length === 0 ||
+            (attributes !== null ? compareAttributes(cat.Attributes) : [])
         )
         .map((cat) => (
           <Cat cat={cat} key={cat.ID} />

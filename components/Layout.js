@@ -2,25 +2,25 @@ import Searchbar from "./Searchbar";
 import Cats from "../components/Cats";
 import { useEffect, useState } from "react";
 export default function Layout({ cats }) {
-  const [breeds, setBreeds] = useState("Any");
-  const [colors, setColors] = useState("Any");
-  const [ages, setAges] = useState("Any");
-  const [sexes, setSexes] = useState("Any");
-  const [attributes, setAttributes] = useState("Any");
+  const [breeds, setBreeds] = useState(null);
+  const [colors, setColors] = useState(null);
+  const [ages, setAges] = useState(null);
+  const [sexes, setSexes] = useState(null);
+  const [attributes, setAttributes] = useState(null);
   const handleBreedChange = (e) => {
-    setBreeds(e.value);
+    setBreeds(e);
   };
   const handleColorChange = (e) => {
-    setColors(e.value);
+    setColors(e);
   };
   const handleAgeChange = (e) => {
-    setAges(e.value);
+    setAges(e);
   };
   const handleSexChange = (e) => {
-    setSexes(e.value);
+    setSexes(e);
   };
   const handleAttributeChange = (e) => {
-    setAttributes(e.value);
+    setAttributes(e);
   };
 
   return (
