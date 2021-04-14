@@ -44,17 +44,42 @@ export default function Searchbar({
     { value: "Bonded", label: "Bonded" },
   ];
   return (
-    <div>
-      <Select options={breeds} onChange={handleBreedChange} isClearable />
-      <Select options={colors} onChange={handleColorChange} isClearable />
-      <Select options={ages} onChange={handleAgeChange} isClearable />
-      <Select options={sexes} onChange={handleSexChange} isClearable />
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-2 m-2">
       <Select
+        options={breeds}
+        onChange={handleBreedChange}
+        isClearable
+        placeholder="Type"
+      />
+      <Select
+        options={colors}
+        onChange={handleColorChange}
+        isClearable
+        placeholder="Color"
+      />
+      <Select
+        options={ages}
+        onChange={handleAgeChange}
+        isClearable
+        placeholder="Age"
+      />
+      <Select
+        options={sexes}
+        onChange={handleSexChange}
+        isClearable
+        placeholder="Gender"
+      />
+      <Select
+        className="col-span-2"
         options={attributes}
         onChange={handleAttributeChange}
         isClearable
         isMulti
       />
+      <input
+        className="border rounded px-2.5 py-1.5 col-span-2"
+        placeholder="Name"
+      ></input>
     </div>
   );
 }

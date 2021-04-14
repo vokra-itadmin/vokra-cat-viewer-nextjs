@@ -1,14 +1,21 @@
+import Title from "../components/Title";
+import Subtitle from "../components/Subtitle";
+import CoverPhoto from "../components/CoverPhoto";
+import CoverDesc from "../components/CoverDesc";
+
 export default function Cat({ cat }) {
   return (
-    <div>
-      <img src={cat.CoverPhoto}></img>
-      <h1>{cat.Name}</h1>
-      <p>
-        <span>{cat.Breed} </span>
-        <span>{cat.Color} </span>
-        <span>{cat.Pattern}</span>
-      </p>
-      <p>{cat.Description}</p>
+    <div
+      onClick={() => {
+        console.log("This worked");
+      }}
+    >
+      <Title>{cat.Name}</Title>
+      <Subtitle>
+        {cat.Breed} {cat.Color} {cat.Pattern}
+      </Subtitle>
+      <CoverPhoto src={cat.CoverPhoto} />
+      <CoverDesc>{cat.Description}</CoverDesc>
     </div>
   );
 }
