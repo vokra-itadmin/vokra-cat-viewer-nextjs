@@ -9,7 +9,7 @@ import Button from "./Button";
 
 export default function CatDetails({ cat, setDismiss }) {
   return (
-    <div className="fixed inset-0 bg-white grid gap-2 lg:grid-cols-2 lg:py-4">
+    <div className="fixed inset-0 bg-white grid gap-2 lg:grid-cols-2 lg:py-4 z-20 overflow-y-scroll">
       <CatPictures src={cat.CoverPhoto} />
       <div>
         <Header>
@@ -27,14 +27,16 @@ export default function CatDetails({ cat, setDismiss }) {
         </Header>
         <CatDesc>{cat.Description}</CatDesc>
         <Attributes attributes={cat.Attributes} />
-        <Button
-          onClick={() => {
-            setDismiss(true);
-          }}
-        >
-          Go Back
-        </Button>
-        <Button>Adopt {cat.Name}!</Button>
+        <div className="flex justify-center">
+          <Button
+            onClick={() => {
+              setDismiss(true);
+            }}
+          >
+            Go Back
+          </Button>
+          <Button>Adopt {cat.Name}!</Button>
+        </div>
       </div>
     </div>
   );

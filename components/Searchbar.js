@@ -44,7 +44,7 @@ export default function Searchbar({
     { value: "Bonded", label: "Bonded" },
   ];
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-2 m-2">
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-2 p-2 fixed w-full bg-white z-10">
       <Select
         options={breeds}
         onChange={handleBreedChange}

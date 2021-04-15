@@ -24,7 +24,7 @@ export default function Cats({
   };
 
   return (
-    <div className="grid md:grid-cols-2 md:p-2 gap-2">
+    <div className="grid md:grid-cols-2 md:p-2 gap-2 absolute top-24 ">
       {cats
         .filter(
           (cat) =>

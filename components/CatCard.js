@@ -18,6 +18,7 @@ export default function CatCard({ cat }) {
     [dismiss];
   return (
     <div
+      className="cursor-pointer"
       onClick={() => {
         setCatDetails(<CatDetails cat={cat} setDismiss={setDismiss} />);
       }}
