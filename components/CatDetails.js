@@ -4,13 +4,13 @@ import Details from "./Details";
 import CatDesc from "./CatDesc";
 import Attributes from "./Attributes";
 import Header from "./Header";
-import CatPictures from "./CatPictures";
+import CatCarousel from "./CatCarousel";
 import Button from "./Button";
 
 export default function CatDetails({ cat, setDismiss }) {
   return (
     <div className="fixed inset-0 bg-white grid gap-2 lg:grid-cols-2 lg:py-4 z-20 overflow-y-scroll">
-      <CatPictures src={cat.CoverPhoto} />
+      <CatCarousel cat={cat} />
       <div>
         <Header>
           <Title>{cat.Name}</Title>
@@ -35,7 +35,9 @@ export default function CatDetails({ cat, setDismiss }) {
           >
             Go Back
           </Button>
-          <Button>Adopt {cat.Name}!</Button>
+          <a href={`https://www.shelterluv.com/matchme/adopt/VOKR-A-${cat.ID}`}>
+            <Button>Adopt {cat.Name}!</Button>
+          </a>
         </div>
       </div>
     </div>
