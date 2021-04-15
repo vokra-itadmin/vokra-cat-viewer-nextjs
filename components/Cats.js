@@ -1,4 +1,4 @@
-import Cat from "../components/Cat";
+import CatCard from "../components/CatCard";
 
 export default function Cats({
   cats,
@@ -24,7 +24,7 @@ export default function Cats({
   };
 
   return (
-    <div className="grid md:grid-cols-2 gap-2">
+    <div className="grid md:grid-cols-2 md:p-2 gap-2">
       {cats
         .filter(
           (cat) =>
@@ -51,7 +51,7 @@ export default function Cats({
             (attributes !== null ? compareAttributes(cat.Attributes) : [])
         )
         .map((cat) => (
-          <Cat cat={cat} key={cat.ID} />
+          <CatCard cat={cat} key={cat.ID} />
         ))}
     </div>
   );
