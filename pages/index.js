@@ -1,23 +1,16 @@
-import { fetchCats } from "../lib/api";
+import { fetchCats, sanitizeCats } from "../lib/api";
 import Layout from "../components/Layout";
-import { useState, useEffect } from "react";
 
 export async function getServerSideProps() {
-  const initialState = await fetchCats();
+  const dirtyCats = await fetchCats();
+  const cats = await sanitizeCats(dirtyCats.animals);
   return {
     props: {
-      initialState,
+      cats,
     },
   };
 }
 
-export default function Index({ initialState }) {
-  const [cats, setCats] = useState([]);
-  useEffect(() => {
-    setCats(initialState.animals);
-  }, [initialState]);
-  useEffect(() => {
-    console.log("cats: ", cats);
-  }, [cats]);
+export default function Index({ cats }) {
   return <Layout cats={cats} />;
 }

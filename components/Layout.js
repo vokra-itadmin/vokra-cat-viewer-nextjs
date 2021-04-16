@@ -1,6 +1,6 @@
 import Searchbar from "./Searchbar";
 import Cats from "../components/Cats";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 export default function Layout({ cats }) {
   const [breeds, setBreeds] = useState(null);
   const [colors, setColors] = useState(null);
