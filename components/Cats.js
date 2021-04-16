@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import CatCard from "../components/CatCard";
 
 export default function Cats({
@@ -7,6 +8,7 @@ export default function Cats({
   ages,
   sexes,
   attributes,
+  name
 }) {
   const convertAge = (age) => {
     if (age < 12) {
@@ -19,10 +21,16 @@ export default function Cats({
   };
   const compareAttributes = (attributesParam) => {
     return attributesParam
+      .filter((attribute) => attribute.Publish === "Yes")
       .map((attribute) => attribute.AttributeName)
-      .some((attribute) => attributes.map((i) => i.value).includes(attribute));
+      .every((attribute) => attributes.map((i) => i.value).includes(attribute));
   };
-
+  useEffect(() => {
+    console.log("cats: ", cats);
+  }, [cats])
+  useEffect(() => {
+    console.log("attributes: ", attributes);
+  }, [attributes])
   return (
     <div className="grid md:grid-cols-2 md:p-2 gap-2 absolute top-48 md:top-24 ">
       {cats
@@ -49,6 +57,9 @@ export default function Cats({
           (cat) =>
             attributes.length === 0 ||
             (attributes !== null ? compareAttributes(cat.Attributes) : [])
+        )
+        .filter(
+          (cat) => cat.Name.toLowerCase().includes(name.target.value.toLowerCase())
         )
         .map((cat) => (
           <CatCard cat={cat} key={cat.ID} />

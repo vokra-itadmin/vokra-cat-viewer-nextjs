@@ -1,9 +1,10 @@
-export default function Button({ onClick, children }) {
+import styles from "./Button.module.css";
+
+export default function Button({ onClick, children, primary }) {
   return (
     <button
-      style={{ borderColor: "rgb(189, 108, 218)", color: "rgb(189, 108, 218)" }}
       onClick={onClick}
-      className="border-2 rounded-full py-3 px-4 text-sm m-4"
+      className={primary ? styles.primary : styles.button}
     >
       {children}
     </button>

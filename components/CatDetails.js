@@ -36,7 +36,7 @@ export default function CatDetails({ cat, setDismiss }) {
             Go Back
           </Button>
           <a href={`https://www.shelterluv.com/matchme/adopt/VOKR-A-${cat.ID}`}>
-            <Button>Adopt {cat.Name}!</Button>
+            <Button primary>Adopt {cat.Name}!</Button>
           </a>
         </div>
       </div>

@@ -6,6 +6,7 @@ export default function Searchbar({
   handleAgeChange,
   handleSexChange,
   handleAttributeChange,
+  handleNameChange,
 }) {
   const breeds = [
     { value: "Longhair", label: "Longhair" },
@@ -43,42 +44,65 @@ export default function Searchbar({
     { value: "OK as single", label: "OK as single" },
     { value: "Bonded", label: "Bonded" },
   ];
+  const selectTheme = (theme) => ({
+    ...theme,
+    borderRadius: 2,
+    border: "1px solid rgb(204, 204, 204)",
+    colors: {
+      ...theme.colors,
+      primary25: "#986cda",
+      primary: "1px solid rgb(204, 204, 204)",
+    },
+  });
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-2 p-2 fixed w-full bg-white z-10">
       <Select
+        className="text-sm"
+        theme={selectTheme}
         options={breeds}
         onChange={handleBreedChange}
         isClearable
         placeholder="Type"
       />
       <Select
+        className="text-sm"
+        theme={selectTheme}
         options={colors}
         onChange={handleColorChange}
         isClearable
         placeholder="Color"
       />
       <Select
+        className="text-sm"
+        theme={selectTheme}
         options={ages}
         onChange={handleAgeChange}
         isClearable
         placeholder="Age"
       />
       <Select
+        className="text-sm"
+        theme={selectTheme}
         options={sexes}
         onChange={handleSexChange}
         isClearable
         placeholder="Gender"
       />
       <Select
-        className="col-span-2"
+        className="text-sm col-span-2"
+        theme={selectTheme}
         options={attributes}
         onChange={handleAttributeChange}
         isClearable
         isMulti
       />
       <input
-        className="border rounded px-2.5 py-1.5 col-span-2"
+        style={{
+          borderColor: "rgb(204, 204, 204)",
+        }}
+        className="border rounded-sm px-2.5 py-1.5 col-span-2 text-sm"
         placeholder="Name"
+        onChange={handleNameChange}
       ></input>
     </div>
   );
