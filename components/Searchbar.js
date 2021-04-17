@@ -51,7 +51,7 @@ export default function Searchbar({
     colors: {
       ...theme.colors,
       primary25: "#986cda",
-      primary: "1px solid rgb(204, 204, 204)",
+      primary: "rgb(204, 204, 204)",
     },
   });
   return (
