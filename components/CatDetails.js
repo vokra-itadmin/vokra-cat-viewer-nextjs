@@ -9,7 +9,10 @@ import Button from "./Button";
 
 export default function CatDetails({ cat, setDismiss }) {
   return (
-    <div className="fixed inset-0 bg-white grid gap-2 lg:grid-cols-2 lg:py-4 z-20 overflow-y-scroll">
+    <div
+      className="fixed inset-0 bg-white grid gap-2 lg:grid-cols-2 lg:py-4 z-20 overflow-y-scroll"
+      style={{ backgroundColor: "rgb(245, 245, 245" }}
+    >
       <CatCarousel cat={cat} />
       <div>
         <Header>

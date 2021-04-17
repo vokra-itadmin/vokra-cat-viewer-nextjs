@@ -27,7 +27,10 @@ export default function Cats({
     );
   };
   return (
-    <div className="grid md:grid-cols-2 md:p-2 gap-2 absolute top-48 md:top-24 ">
+    <div
+      className="grid md:grid-cols-2 md:p-2 gap-2 absolute top-48 md:top-24 "
+      style={{ backgroundColor: "rgb(245, 245, 245" }}
+    >
       {cats
         .filter(
           (cat) =>

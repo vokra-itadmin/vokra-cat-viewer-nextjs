@@ -55,7 +55,10 @@ export default function Searchbar({
     },
   });
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-2 p-2 fixed w-full bg-white z-10">
+    <div
+      className="grid grid-cols-2 md:grid-cols-4 gap-2 p-2 fixed w-full z-10"
+      style={{ backgroundColor: "rgb(245, 245, 245" }}
+    >
       <Select
         className="text-sm"
         theme={selectTheme}

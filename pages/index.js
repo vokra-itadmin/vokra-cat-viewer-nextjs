@@ -4,7 +4,6 @@ import Layout from "../components/Layout";
 export async function getStaticProps() {
   const dirtyCats = await fetchCats();
   const cats = await sanitizeCats(dirtyCats.animals);
-  console.log("cats: ", cats);
   return {
     props: {
       cats,
