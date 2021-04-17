@@ -4,8 +4,8 @@ import { Carousel } from "react-responsive-carousel";
 export default function CatCarousel({ cat }) {
   return (
     <Carousel showThumbs={false}>
-      {cat.Photos.map((photo) => (
-        <div>
+      {cat.Photos.map((photo, index) => (
+        <div key={index}>
           <img src={photo}></img>
         </div>
       ))}

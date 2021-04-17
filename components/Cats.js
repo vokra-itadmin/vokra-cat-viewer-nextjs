@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import CatCard from "../components/CatCard";
 
 export default function Cats({
