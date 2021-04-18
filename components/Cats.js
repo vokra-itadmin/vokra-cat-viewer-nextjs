@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import CatCard from "../components/CatCard";
+import CatDetails from "./CatDetails";
 
 export default function Cats({
   cats,
@@ -27,12 +28,30 @@ export default function Cats({
         .includes(attribute.value)
     );
   };
-  const [hideCats, setHideCats] = useState("");
+  useEffect(() => {
+    if (dismiss) {
+      setCatDetails("");
+      setDismiss(false);
+      setCatsDisplay("relative");
+    }
+  }),
+    [dismiss];
+  const [catDetails, setCatDetails] = useState("");
+  const [dismiss, setDismiss] = useState(false);
+  const [catsDisplay, setCatsDisplay] = useState("relative");
   return (
     <div
-      className="grid md:grid-cols-2 md:p-2 gap-2 top-48 md:top-24 relative"
+      className={`grid md:grid-cols-2 md:p-2 gap-2 top-44 md:top-24 ${catsDisplay}`}
       style={{ backgroundColor: "rgb(245, 245, 245" }}
     >
+      {catDetails ? (
+        <CatDetails
+          cat={cats.find((cat) => cat.ID === catDetails)}
+          setDismiss={setDismiss}
+        />
+      ) : (
+        ""
+      )}
       {cats
         .filter(
           (cat) =>
@@ -62,7 +81,13 @@ export default function Cats({
           cat.Name.toLowerCase().includes(name.target.value.toLowerCase())
         )
         .map((cat) => (
-          <CatCard cat={cat} key={cat.ID} />
+          <CatCard
+            cat={cat}
+            key={cat.ID}
+            setCatDetails={setCatDetails}
+            setDismiss={setDismiss}
+            setCatsDisplay={setCatsDisplay}
+          />
         ))}
     </div>
   );

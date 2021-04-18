@@ -6,21 +6,19 @@ import CatDetails from "./CatDetails";
 import Header from "./Header";
 import { useState, useEffect } from "react";
 
-export default function CatCard({ cat }) {
-  const [catDetails, setCatDetails] = useState("");
-  const [dismiss, setDismiss] = useState(false);
-  useEffect(() => {
-    if (dismiss) {
-      setCatDetails("");
-      setDismiss(false);
-    }
-  }),
-    [dismiss];
+export default function CatCard({
+  cat,
+  catDetails,
+  setCatDetails,
+  setDismiss,
+  setCatsDisplay,
+}) {
   return (
     <div
       className="cursor-pointer"
       onClick={() => {
-        setCatDetails(<CatDetails cat={cat} setDismiss={setDismiss} />);
+        setCatDetails(cat.ID);
+        setCatsDisplay("fixed z-20");
       }}
     >
       <Header>
