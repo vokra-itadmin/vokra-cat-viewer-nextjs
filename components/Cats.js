@@ -11,6 +11,9 @@ export default function Cats({
   attributes,
   name,
 }) {
+  const [catDetails, setCatDetails] = useState("");
+  const [dismiss, setDismiss] = useState(false);
+  const [catsDisplay, setCatsDisplay] = useState("relative");
   const convertAge = (age) => {
     if (age < 12) {
       return "Kitten (< 1 year)";
@@ -36,9 +39,6 @@ export default function Cats({
     }
   }),
     [dismiss];
-  const [catDetails, setCatDetails] = useState("");
-  const [dismiss, setDismiss] = useState(false);
-  const [catsDisplay, setCatsDisplay] = useState("relative");
   return (
     <div
       className={`grid md:grid-cols-2 md:p-2 gap-2 top-44 md:top-24 ${catsDisplay}`}
