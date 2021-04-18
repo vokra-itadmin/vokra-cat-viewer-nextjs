@@ -1,3 +1,4 @@
+import { useState } from "react";
 import CatCard from "../components/CatCard";
 
 export default function Cats({
@@ -26,9 +27,10 @@ export default function Cats({
         .includes(attribute.value)
     );
   };
+  const [hideCats, setHideCats] = useState("");
   return (
     <div
-      className="grid md:grid-cols-2 md:p-2 gap-2 absolute top-48 md:top-24 "
+      className="grid md:grid-cols-2 md:p-2 gap-2 top-48 md:top-24 relative"
       style={{ backgroundColor: "rgb(245, 245, 245" }}
     >
       {cats
