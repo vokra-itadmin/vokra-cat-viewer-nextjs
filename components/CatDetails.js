@@ -7,7 +7,7 @@ import Header from "./Header";
 import CatCarousel from "./CatCarousel";
 import Button from "./Button";
 
-export default function CatDetails({ cat, setDismiss }) {
+export default function CatDetails({ cats, cat, setCatDetails, setDismiss }) {
   return (
     <div
       className="fixed inset-0 bg-white grid gap-2 lg:grid-cols-2 lg:py-4 z-20 overflow-y-scroll"
@@ -29,7 +29,12 @@ export default function CatDetails({ cat, setDismiss }) {
           </Details>
         </Header>
         <CatDesc>{cat.Description}</CatDesc>
-        <Attributes attributes={cat.Attributes} />
+        <Attributes
+          cats={cats}
+          cat={cat}
+          setCatDetails={setCatDetails}
+          setDismiss={setDismiss}
+        />
         <div className="flex justify-center">
           <Button
             onClick={() => {

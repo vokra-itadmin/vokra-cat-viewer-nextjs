@@ -46,7 +46,9 @@ export default function Cats({
     >
       {catDetails ? (
         <CatDetails
+          cats={cats}
           cat={cats.find((cat) => cat.ID === catDetails)}
+          setCatDetails={setCatDetails}
           setDismiss={setDismiss}
         />
       ) : (

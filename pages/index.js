@@ -1,5 +1,6 @@
 import { fetchCats, sanitizeCats } from "../lib/api";
 import Layout from "../components/Layout";
+import { useEffect } from 'react';
 
 export async function getStaticProps() {
   const dirtyCats = await fetchCats();
@@ -13,5 +14,8 @@ export async function getStaticProps() {
 }
 
 export default function Index({ cats }) {
+  useEffect(() => {
+    console.log("cats: ", cats);
+  },[cats])
   return <Layout cats={cats} />;
 }
