@@ -1,4 +1,8 @@
-export default function Attributes({ cats, cat, setCatDetails }) {
+import Link from "next/link";
+import { useContextualRouting } from "next-use-contextual-routing";
+
+export default function Attributes({ cats, cat, returnHref }) {
+  const { makeContextualHref } = useContextualRouting();
   const catBondedID = (thing) => {
     return thing.PreviousIds.filter((i) => i.Type === "Visibility").map(
       (i) => i.IdValue
@@ -20,14 +24,15 @@ export default function Attributes({ cats, cat, setCatDetails }) {
                     attribute.AttributeName === "Bonded"
                 )
                 .map((i) => (
-                  <span
-                    className="cursor-pointer underline"
-                    onClick={() => {
-                      setCatDetails(i.ID);
-                    }}
+                  <Link
+                    href={makeContextualHref({ catId: i.ID })}
+                    as={`/cat/${i.ID}`}
                   >
-                    {i.Name}
-                  </span>
+                    <a>
+                      {" "}
+                      <span className="cursor-pointer underline">{i.Name}</span>
+                    </a>
+                  </Link>
                 ))}
             </span>
           </li>

@@ -4,15 +4,9 @@ import CoverPhoto from "./CoverPhoto";
 import CoverDesc from "./CoverDesc";
 import Header from "./Header";
 
-export default function CatCard({ cat, setCatDetails, setCatsDisplay }) {
+export default function CatCard({ cat, setCatsDisplay }) {
   return (
-    <div
-      className="cursor-pointer"
-      onClick={() => {
-        setCatDetails(cat.ID);
-        setCatsDisplay("fixed z-20");
-      }}
-    >
+    <div className="cursor-pointer">
       <Header>
         <Title>{cat.Name}</Title>
         <Subtitle>

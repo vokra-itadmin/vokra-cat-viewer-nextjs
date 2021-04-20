@@ -6,8 +6,9 @@ import Attributes from "./Attributes";
 import Header from "./Header";
 import CatCarousel from "./CatCarousel";
 import Button from "./Button";
+import Link from "next/link";
 
-export default function CatDetails({ cats, cat, setCatDetails, setDismiss }) {
+export default function CatDetails({ cats, cat, returnHref }) {
   return (
     <div
       className="fixed inset-0 bg-white grid gap-2 lg:grid-cols-2 lg:py-4 z-20 overflow-y-scroll"
@@ -29,15 +30,11 @@ export default function CatDetails({ cats, cat, setCatDetails, setDismiss }) {
           </Details>
         </Header>
         <CatDesc>{cat.Description}</CatDesc>
-        <Attributes cats={cats} cat={cat} setCatDetails={setCatDetails} />
+        <Attributes cats={cats} cat={cat} returnHref={returnHref} />
         <div className="flex justify-center">
-          <Button
-            onClick={() => {
-              setDismiss(true);
-            }}
-          >
-            Go Back
-          </Button>
+          <Link href={returnHref === undefined ? "/" : returnHref}>
+            <Button>Go Back</Button>
+          </Link>
           <a href={`https://www.shelterluv.com/matchme/adopt/VOKR-A-${cat.ID}`}>
             <Button primary>Adopt {cat.Name}!</Button>
           </a>

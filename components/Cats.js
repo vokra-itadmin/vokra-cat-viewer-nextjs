@@ -2,6 +2,10 @@ import { useState, useEffect } from "react";
 import CatCard from "../components/CatCard";
 import CatDetails from "./CatDetails";
 
+import { useRouter } from "next/router";
+import { useContextualRouting } from "next-use-contextual-routing";
+import Link from "next/link";
+
 export default function Cats({
   cats,
   breeds,
@@ -11,7 +15,9 @@ export default function Cats({
   attributes,
   name,
 }) {
-  const [catDetails, setCatDetails] = useState("");
+  const router = useRouter();
+  const { makeContextualHref, returnHref } = useContextualRouting();
+  const pageState = router.query.state;
   const [dismiss, setDismiss] = useState(false);
   const [catsDisplay, setCatsDisplay] = useState("relative");
   const convertAge = (age) => {
@@ -32,24 +38,24 @@ export default function Cats({
     );
   };
   useEffect(() => {
-    if (dismiss) {
-      setCatDetails("");
-      setDismiss(false);
+    if (!!router.query.catId) {
+      setCatsDisplay("fixed z-20");
+    } else {
       setCatsDisplay("relative");
     }
   }),
-    [dismiss];
+    [router.query.catId];
   return (
     <div
       className={`grid md:grid-cols-2 md:p-2 gap-2 top-44 md:top-24 ${catsDisplay}`}
       style={{ backgroundColor: "rgb(245, 245, 245" }}
     >
-      {catDetails ? (
+      {!!router.query.catId ? (
         <CatDetails
           cats={cats}
-          cat={cats.find((cat) => cat.ID === catDetails)}
-          setCatDetails={setCatDetails}
+          cat={cats.find((cat) => cat.ID === router.query.catId)}
           setDismiss={setDismiss}
+          returnHref={returnHref}
         />
       ) : (
         ""
@@ -83,13 +89,19 @@ export default function Cats({
           cat.Name.toLowerCase().includes(name.target.value.toLowerCase())
         )
         .map((cat) => (
-          <CatCard
-            cat={cat}
-            key={cat.ID}
-            setCatDetails={setCatDetails}
-            setDismiss={setDismiss}
-            setCatsDisplay={setCatsDisplay}
-          />
+          <Link
+            href={makeContextualHref({ catId: cat.ID })}
+            as={`/cat/${cat.ID}`}
+          >
+            <a>
+              <CatCard
+                cat={cat}
+                key={cat.ID}
+                setDismiss={setDismiss}
+                setCatsDisplay={setCatsDisplay}
+              />
+            </a>
+          </Link>
         ))}
     </div>
   );
