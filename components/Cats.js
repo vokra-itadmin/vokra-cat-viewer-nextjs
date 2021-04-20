@@ -17,8 +17,6 @@ export default function Cats({
 }) {
   const router = useRouter();
   const { makeContextualHref, returnHref } = useContextualRouting();
-  const pageState = router.query.state;
-  const [dismiss, setDismiss] = useState(false);
   const [catsDisplay, setCatsDisplay] = useState("relative");
   const convertAge = (age) => {
     if (age < 12) {
@@ -54,7 +52,6 @@ export default function Cats({
         <CatDetails
           cats={cats}
           cat={cats.find((cat) => cat.ID === router.query.catId)}
-          setDismiss={setDismiss}
           returnHref={returnHref}
         />
       ) : (
@@ -94,12 +91,7 @@ export default function Cats({
             as={`/cat/${cat.ID}`}
           >
             <a>
-              <CatCard
-                cat={cat}
-                key={cat.ID}
-                setDismiss={setDismiss}
-                setCatsDisplay={setCatsDisplay}
-              />
+              <CatCard cat={cat} key={cat.ID} />
             </a>
           </Link>
         ))}

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { useContextualRouting } from "next-use-contextual-routing";
 
-export default function Attributes({ cats, cat, returnHref }) {
+export default function Attributes({ cats, cat }) {
   const { makeContextualHref } = useContextualRouting();
   const catBondedID = (thing) => {
     return thing.PreviousIds.filter((i) => i.Type === "Visibility").map(
@@ -30,7 +30,7 @@ export default function Attributes({ cats, cat, returnHref }) {
                   >
                     <a>
                       {" "}
-                      <span className="cursor-pointer underline">{i.Name}</span>
+                      <span className="underline">{i.Name}</span>
                     </a>
                   </Link>
                 ))}
