@@ -1,4 +1,9 @@
-export default function Attributes({ cats, cat, setCatDetails, setDismiss }) {
+export default function Attributes({ cats, cat, setCatDetails }) {
+  const catBondedID = (thing) => {
+    return thing.PreviousIds.filter((i) => i.Type === "Visibility").map(
+      (i) => i.IdValue
+    );
+  };
   return (
     <ul className="mx-4 flex">
       {cat.Attributes.filter((attribute) => attribute.Publish === "Yes").map(
@@ -11,8 +16,7 @@ export default function Attributes({ cats, cat, setCatDetails, setDismiss }) {
               {cats
                 .filter(
                   (i) =>
-                    i.LitterGroupId === cat.LitterGroupId &&
-                    i.ID !== cat.ID &&
+                    catBondedID(i).some((j) => j === cat["Internal-ID"]) &&
                     attribute.AttributeName === "Bonded"
                 )
                 .map((i) => (

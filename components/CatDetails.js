@@ -29,12 +29,7 @@ export default function CatDetails({ cats, cat, setCatDetails, setDismiss }) {
           </Details>
         </Header>
         <CatDesc>{cat.Description}</CatDesc>
-        <Attributes
-          cats={cats}
-          cat={cat}
-          setCatDetails={setCatDetails}
-          setDismiss={setDismiss}
-        />
+        <Attributes cats={cats} cat={cat} setCatDetails={setCatDetails} />
         <div className="flex justify-center">
           <Button
             onClick={() => {
