@@ -9,7 +9,7 @@ export default function Layout({ cats }) {
   const [attributes, setAttributes] = useState([]);
   const [name, setName] = useState({ target: { value: "" } });
   return (
-    <div>
+    <div className="w-full">
       <Searchbar
         handleBreedChange={setBreeds}
         handleColorChange={setColors}
