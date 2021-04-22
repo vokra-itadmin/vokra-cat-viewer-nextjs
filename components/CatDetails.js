@@ -3,7 +3,7 @@ import Subtitle from "./Subtitle";
 import Details from "./Details";
 import CatDesc from "./CatDesc";
 import Attributes from "./Attributes";
-import Header from "./Header";
+import CatHeader from "./CatHeader";
 import CatCarousel from "./CatCarousel";
 import Button from "./Button";
 import Link from "next/link";
@@ -16,7 +16,7 @@ export default function CatDetails({ cats, cat, returnHref }) {
     >
       <CatCarousel cat={cat} />
       <div>
-        <Header>
+        <CatHeader>
           <Title>{cat.Name}</Title>
           <Subtitle>
             {cat.Sex}
@@ -28,7 +28,7 @@ export default function CatDetails({ cats, cat, returnHref }) {
           <Details>
             {cat.Breed} {cat.Color} {cat.Pattern}
           </Details>
-        </Header>
+        </CatHeader>
         <Attributes cats={cats} cat={cat} returnHref={returnHref} />
         <CatDesc>{cat.Description}</CatDesc>
         <div className="flex justify-center">

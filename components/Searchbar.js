@@ -98,6 +98,7 @@ export default function Searchbar({
         onChange={handleAttributeChange}
         isClearable
         isMulti
+        placeholder="Attributes..."
       />
       <input
         style={{

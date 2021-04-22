@@ -2,17 +2,17 @@ import Title from "./Title";
 import Subtitle from "./Subtitle";
 import CoverPhoto from "./CoverPhoto";
 import CoverDesc from "./CoverDesc";
-import Header from "./Header";
+import CatHeader from "./CatHeader";
 
 export default function CatCard({ cat }) {
   return (
     <div>
-      <Header>
+      <CatHeader>
         <Title>{cat.Name}</Title>
         <Subtitle>
           {cat.Breed} {cat.Color} {cat.Pattern}
         </Subtitle>
-      </Header>
+      </CatHeader>
       <CoverPhoto src={cat.CoverPhoto} />
       <CoverDesc>{cat.Description}</CoverDesc>
     </div>

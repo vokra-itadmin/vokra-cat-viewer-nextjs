@@ -1,3 +1,3 @@
-export default function Details({ children }) {
-  return <header className="m-4">{children}</header>;
+export default function Header() {
+  return <header className="fixed" >Hello, world.</header>;
 }

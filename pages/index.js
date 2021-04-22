@@ -1,6 +1,5 @@
 import { fetchCats, sanitizeCats } from "../lib/api";
 import Layout from "../components/Layout";
-import { useEffect } from 'react';
 
 export async function getStaticProps() {
   const dirtyCats = await fetchCats();

@@ -1,6 +1,8 @@
 import { fetchCats, sanitizeCats } from "../../lib/api";
 import { useRouter } from "next/router";
 import CatDetails from "../../components/CatDetails";
+import Header from "../../components/Header";
+import Footer from "../../components/Footer";
 
 export async function getStaticPaths() {
   const dirtyCats = await fetchCats();
@@ -28,7 +30,11 @@ export async function getStaticProps({ params }) {
 const CatPage = ({ cats }) => {
   const router = useRouter();
   const { catId } = router.query;
-  return <CatDetails cat={cats.find((i) => i.ID === catId)} cats={cats} />;
+  return (
+    <>
+      <CatDetails cat={cats.find((i) => i.ID === catId)} cats={cats} />
+    </>
+  );
 };
 
 export default CatPage;
