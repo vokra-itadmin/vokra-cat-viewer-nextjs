@@ -29,8 +29,8 @@ export default function CatDetails({ cats, cat, returnHref }) {
             {cat.Breed} {cat.Color} {cat.Pattern}
           </Details>
         </Header>
-        <CatDesc>{cat.Description}</CatDesc>
         <Attributes cats={cats} cat={cat} returnHref={returnHref} />
+        <CatDesc>{cat.Description}</CatDesc>
         <div className="flex justify-center">
           <Link href={returnHref === undefined ? "/" : returnHref}>
             <Button>Go Back</Button>

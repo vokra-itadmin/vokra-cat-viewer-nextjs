@@ -14,8 +14,5 @@ export async function getStaticProps() {
 }
 
 export default function Index({ cats }) {
-  useEffect(() => {
-    console.log("cats: ", cats);
-  },[cats])
   return <Layout cats={cats} />;
 }
