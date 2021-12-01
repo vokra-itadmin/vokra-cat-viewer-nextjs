@@ -54,7 +54,7 @@ export default function Cats({
         ""
       )}
       <div
-        className={`grid md:grid-cols-2 md:top-24 top-48 md:p-4 gap-6 overflow-y-scroll h-main ${catsDisplay} bg-vokra-gray`}
+        className={`grid md:grid-cols-2 md:top-36 top-52 md:p-4 gap-6 overflow-y-scroll h-main ${catsDisplay} bg-vokra-gray`}
       >
         {cats
           .filter(

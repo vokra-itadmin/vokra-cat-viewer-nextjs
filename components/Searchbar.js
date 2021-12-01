@@ -56,55 +56,84 @@ export default function Searchbar({
   });
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-2 p-3 fixed w-full z-20 bg-vokra-gray">
-      <Select
-        className="text-sm"
-        theme={selectTheme}
-        options={breeds}
-        onChange={handleBreedChange}
-        isClearable
-        placeholder="Type"
-      />
-      <Select
-        className="text-sm"
-        theme={selectTheme}
-        options={colors}
-        onChange={handleColorChange}
-        isClearable
-        placeholder="Color"
-      />
-      <Select
-        className="text-sm"
-        theme={selectTheme}
-        options={ages}
-        onChange={handleAgeChange}
-        isClearable
-        placeholder="Age"
-      />
-      <Select
-        className="text-sm"
-        theme={selectTheme}
-        options={sexes}
-        onChange={handleSexChange}
-        isClearable
-        placeholder="Gender"
-      />
-      <Select
-        className="text-sm col-span-2"
-        theme={selectTheme}
-        options={attributes}
-        onChange={handleAttributeChange}
-        isClearable
-        isMulti
-        placeholder="Attributes..."
-      />
-      <input
-        style={{
-          borderColor: "rgb(204, 204, 204)",
-        }}
-        className="border rounded-sm px-2.5 py-1.5 col-span-2 text-sm"
-        placeholder="Name"
-        onChange={handleNameChange}
-      />
+      <label className="text-sm text-gray-800">
+        Breed
+        <Select
+          id="breed"
+          className="text-sm"
+          theme={selectTheme}
+          options={breeds}
+          onChange={handleBreedChange}
+          isClearable
+          placeholder="Select..."
+        />
+      </label>
+      <label className="text-sm text-gray-800">
+        Color
+        <Select
+          id="color"
+          className="text-sm"
+          theme={selectTheme}
+          options={colors}
+          onChange={handleColorChange}
+          isClearable
+          placeholder="Select..."
+        />
+      </label>
+
+      <label className="text-sm text-gray-800">
+        Age
+        <Select
+          id="age"
+          className="text-sm"
+          theme={selectTheme}
+          options={ages}
+          onChange={handleAgeChange}
+          isClearable
+          placeholder="Select..."
+        />
+      </label>
+
+      <label className="text-sm text-gray-800">
+        Gender
+        <Select
+          id="gender"
+          className="text-sm"
+          theme={selectTheme}
+          options={sexes}
+          onChange={handleSexChange}
+          isClearable
+          placeholder="Select..."
+        />
+      </label>
+
+      <label className="text-sm text-gray-800">
+        Attributes
+        <Select
+          id="attribute"
+          className="text-sm col-span-2"
+          theme={selectTheme}
+          options={attributes}
+          onChange={handleAttributeChange}
+          isClearable
+          isMulti
+          placeholder="Select..."
+        />
+      </label>
+      <label className="text-sm text-gray-800">
+        <div>Name</div>
+        <input
+          id="name"
+          style={{
+            borderColor: "rgb(204, 204, 204)",
+            width: "100%",
+            minHeight: "38px",
+          }}
+          className="border rounded-sm px-2.5 py-1.5 col-span-2 text-sm"
+          placeholder="Enter"
+          onChange={handleNameChange}
+        />
+      </label>
     </div>
   );
 }
