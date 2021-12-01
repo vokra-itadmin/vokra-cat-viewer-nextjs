@@ -1,4 +1,5 @@
 import { returnCats } from "../lib/api";
+import Head from "next/head";
 import Layout from "../components/Layout";
 
 export async function getStaticProps() {
@@ -12,5 +13,12 @@ export async function getStaticProps() {
 }
 
 export default function Index({ cats }) {
-  return <Layout cats={cats} />;
+  return (
+    <>
+      <Head>
+        <title>VOKRA cats and kittens available for adoption</title>
+      </Head>
+      <Layout cats={cats} />
+    </>
+  );
 }
