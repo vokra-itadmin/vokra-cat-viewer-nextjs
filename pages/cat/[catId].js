@@ -13,9 +13,12 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
-  const fosterCats = await returnCats();
-  const adoptedCats = await returnAdoptedCats();
-  const cats = fosterCats.concat(adoptedCats);
+  let cats = [];
+  const promises = await Promise.all([returnCats(), returnAdoptedCats()]).then(
+    (res) => {
+      cats = res[0].concat(res[1]);
+    }
+  );
   return {
     props: {
       cats,
