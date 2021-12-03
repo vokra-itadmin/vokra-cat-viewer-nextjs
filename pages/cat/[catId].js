@@ -24,7 +24,7 @@ export async function getStaticProps({ params }) {
       cats,
       catId: params.catId,
     },
-    revalidate: 1,
+    revalidate: 1800,
   };
 }
 
