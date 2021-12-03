@@ -17,7 +17,9 @@ export default function CoverPhoto({ src, cat }) {
         width={1000}
         height={1000}
         src={src}
-        alt={`${cat.Name}, a ${cat.Breed} ${cat.Color} cat`}
+        alt={`${cat.Name}, a ${cat.Breed} ${cat.Color ? cat.Color + " " : ""}${
+          cat.Pattern ? cat.Pattern + " " : ""
+        }cat`}
       />
     </div>
   );
