@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { returnCats } from "../../lib/api";
+import { returnCats, returnAdoptedCats } from "../../lib/api";
 import CatDetails from "../../components/CatDetails";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
@@ -13,7 +13,9 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
-  const cats = await returnCats();
+  const fosterCats = await returnCats();
+  const adoptedCats = await returnAdoptedCats();
+  const cats = fosterCats.concat(adoptedCats);
   return {
     props: {
       cats,
