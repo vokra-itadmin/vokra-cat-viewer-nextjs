@@ -5,7 +5,12 @@ import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 
 export async function getStaticPaths() {
-  const cats = await returnCats();
+  let cats = [];
+  const promises = await Promise.all([returnCats(), returnAdoptedCats()]).then(
+    (res) => {
+      cats = res[0].concat(res[1]);
+    }
+  );
   return {
     paths: cats.map((i) => ({ params: { catId: i.ID } })),
     fallback: "blocking",
