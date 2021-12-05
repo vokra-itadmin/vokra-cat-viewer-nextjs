@@ -35,7 +35,9 @@ export async function getStaticProps({ params }) {
     );
     if (bondedID) {
       const catBonded = await fetcher(`${FETCH_URL}/${bondedID.IdValue}`);
-      cats.push(catBonded);
+      if (!catBonded.hasOwnProperty("error_message")) {
+        cats.push(catBonded);
+      }
     }
   }
   let timeout = await new Promise((resolve) => setTimeout(resolve, 2000));
