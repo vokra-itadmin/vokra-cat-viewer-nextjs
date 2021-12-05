@@ -46,7 +46,7 @@ export default function Cats({
       {router.query.catId ? (
         <CatDetails
           cats={cats}
-          cat={cats.find((cat) => cat.ID === router.query.catId)}
+          cat={cats.find((cat) => cat["Internal-ID"] === router.query.catId)}
           returnHref={returnHref}
           position="fixed"
         />
@@ -77,12 +77,12 @@ export default function Cats({
           )
           .map((cat) => (
             <Link
-              key={cat.ID}
-              href={makeContextualHref({ catId: cat.ID })}
-              as={`/cat/${cat.ID}`}
+              key={cat["Internal-ID"]}
+              href={makeContextualHref({ catId: cat["Internal-ID"] })}
+              as={`/cat/${cat["Internal-ID"]}`}
             >
               <a>
-                <CatCard cat={cat} key={cat.ID} />
+                <CatCard cat={cat} key={cat["Internal-ID"]} />
               </a>
             </Link>
           ))}

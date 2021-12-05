@@ -1,5 +1,6 @@
-import CatCarousel from './CatCarousel';
-import CatInfo from './CatInfo';
+import { useEffect } from "react";
+import CatCarousel from "./CatCarousel";
+import CatInfo from "./CatInfo";
 
 export default function CatDetails({ cats, cat, returnHref, position, url }) {
   return (

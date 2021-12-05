@@ -1,8 +1,9 @@
 import { useRouter } from "next/router";
-import { returnCats, returnAdoptedCats } from "../../lib/api";
+import { returnCats, returnAdoptedCats, fetcher } from "../../lib/api";
 import CatDetails from "../../components/CatDetails";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
+import FETCH_URL from "../../config/api";
 
 export async function getStaticPaths() {
   let cats = [];
@@ -11,42 +12,50 @@ export async function getStaticPaths() {
       cats = res[0].concat(res[1]);
     }
   );
+
   return {
-    paths: cats.map((i) => ({ params: { catId: i.ID } })),
-    fallback: "blocking",
+    paths: cats.map((cat) => ({
+      params: {
+        catId: cat["Internal-ID"],
+      },
+    })),
+    fallback: false,
   };
 }
 
 export async function getStaticProps({ params }) {
   let cats = [];
-  const promises = await Promise.all([returnCats(), returnAdoptedCats()]).then(
-    (res) => {
-      cats = res[0].concat(res[1]);
-    }
+  const cat = await fetcher(`${FETCH_URL}/${params.catId}`);
+  const bonded = cat.Attributes.some(
+    (element) => element.AttributeName === "Bonded"
   );
+  if (bonded === true) {
+    const bondedID = cat.PreviousIds.find(
+      (element) => element.Type === "Visibility"
+    );
+    if (bondedID) {
+      const catBonded = await fetcher(`${FETCH_URL}/${bondedID.IdValue}`);
+      cats.push(catBonded);
+    }
+  }
+  let timeout = await new Promise((resolve) => setTimeout(resolve, 2000));
   return {
     props: {
-      cats,
-      catId: params.catId,
+      cats: cats,
+      cat: cat,
     },
     revalidate: 1800,
   };
 }
 
-const CatPage = ({ cats }) => {
+const CatPage = ({ cat, cats }) => {
   const router = useRouter();
-  const { catId } = router.query;
   return (
     <div className="w-full flex flex-col items-center">
       <Header />
       <div className="w-full flex justify-center bg-vokra-gray">
         <div className="" style={{ width: "1200px" }}>
-          <CatDetails
-            cat={cats.find((i) => i.ID === catId)}
-            cats={cats}
-            position="static"
-            url
-          />
+          <CatDetails cat={cat} cats={cats} position="static" url />
         </div>
       </div>
       <Footer />
