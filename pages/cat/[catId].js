@@ -30,14 +30,17 @@ export async function getStaticProps({ params }) {
     (element) => element.AttributeName === "Bonded"
   );
   if (bonded === true) {
-    const bondedID = cat.PreviousIds.find(
+    const bondedID = cat.PreviousIds.filter(
       (element) => element.Type === "Visibility"
     );
-    if (bondedID) {
-      const catBonded = await returnCat(bondedID.IdValue);
-      if (!catBonded.hasOwnProperty("error_message")) {
-        cats.push(catBonded);
-      }
+    if (bondedID.length > 0) {
+      const promises = bondedID.map((cat) => returnCat(cat.IdValue));
+      const catBonded = await Promise.all(promises);
+      catBonded.forEach((cat) => {
+        if (!cat.hasOwnProperty("error_message")) {
+          cats.push(cat);
+        }
+      });
     }
   }
   let timeout = await new Promise((resolve) => setTimeout(resolve, 2000));
