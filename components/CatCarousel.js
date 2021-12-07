@@ -8,7 +8,7 @@ export default function CatCarousel({ cat }) {
   return (
     <div className="lg:p-4">
       <div className="relative">
-        {cat.Adopted ? <Ribbon color="bg-yellow-400">Adopted!</Ribbon> : ""}
+        {cat.Adopted ? <Ribbon color="bg-vokra-dark">Adopted!</Ribbon> : ""}
         <Carousel showThumbs={false} showIndicators={false}>
           {cat.Photos.map((photo, index) => (
             <div key={index}>
