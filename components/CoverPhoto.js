@@ -8,7 +8,7 @@ export default function CoverPhoto({ src, cat }) {
       {cat.Attributes.map((attribute) => attribute.AttributeName).includes(
         "Special Adoption"
       ) ? (
-        <Ribbon>I'm Extra Special!</Ribbon>
+        <Ribbon color="bg-vokra-light">I'm Extra Special!</Ribbon>
       ) : (
         ""
       )}

@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { returnCats, returnAdoptedCats, fetcher } from "../../lib/api";
+import { returnCat, returnCats, returnAdoptedCats } from "../../lib/api";
 import CatDetails from "../../components/CatDetails";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
@@ -25,7 +25,7 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({ params }) {
   let cats = [];
-  const cat = await fetcher(`${FETCH_URL}/${params.catId}`);
+  const cat = await returnCat(params.catId);
   const bonded = cat.Attributes.some(
     (element) => element.AttributeName === "Bonded"
   );
@@ -34,7 +34,7 @@ export async function getStaticProps({ params }) {
       (element) => element.Type === "Visibility"
     );
     if (bondedID) {
-      const catBonded = await fetcher(`${FETCH_URL}/${bondedID.IdValue}`);
+      const catBonded = await returnCat(bondedID.IdValue);
       if (!catBonded.hasOwnProperty("error_message")) {
         cats.push(catBonded);
       }
