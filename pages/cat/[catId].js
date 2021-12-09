@@ -43,7 +43,6 @@ export async function getStaticProps({ params }) {
       });
     }
   }
-  let timeout = await new Promise((resolve) => setTimeout(resolve, 2000));
   return {
     props: {
       cats: cats,
