@@ -19,7 +19,7 @@ export default function CatCarousel({ cat }) {
                 src={photo}
                 alt={`${cat.Name}, a ${cat.Breed} ${
                   cat.Color ? cat.Color + " " : ""
-                }${cat.Pattern ? cat.Pattern + " " : ""}cat ${index + 1}`}
+                }${cat.Pattern ? cat.Pattern + "" : ""}cat ${index + 1}`}
               />
             </div>
           ))}

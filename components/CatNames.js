@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useState } from "react";
 
 export default function CatNames({ cats }) {
-  const [nameFilter, setNameFilter] = useState('');
+  const [nameFilter, setNameFilter] = useState("");
 
   const uniqueNames = [...new Set(cats.map(({ Name }) => Name))];
   const lowercaseNameFilter = nameFilter.toLowerCase();
@@ -29,7 +29,8 @@ export default function CatNames({ cats }) {
       return a.lowercaseName.localeCompare(z.lowercaseName);
     });
 
-  const columnStyle = namesToRender.length > 20 ? { columns: '16rem auto' } : undefined;
+  const columnStyle =
+    namesToRender.length > 20 ? { columns: "16rem auto" } : undefined;
 
   return (
     <div className="p-4">

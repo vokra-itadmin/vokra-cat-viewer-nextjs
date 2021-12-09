@@ -1,5 +1,5 @@
-import { returnCatsInCustody } from '../lib/api';
-import CatNames from '../components/CatNames';
+import { returnCatsInCustody } from "../lib/api";
+import CatNames from "../components/CatNames";
 
 export async function getStaticProps() {
   const cats = await returnCatsInCustody();

@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import CatCarousel from "./CatCarousel";
 import CatInfo from "./CatInfo";
 
