@@ -32,7 +32,9 @@ export default function Cats({
 }) {
   const router = useRouter();
   return (
-    <div className={`grid md:grid-cols-2 md:p-4 gap-6 h-main bg-vokra-gray`}>
+    <div
+      className={`grid md:grid-cols-2 md:top-36 top-52 md:p-4 gap-6 overflow-y-scroll h-main fixed bg-vokra-gray`}
+    >
       {cats
         .filter(
           (cat) =>
