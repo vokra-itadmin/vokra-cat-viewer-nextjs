@@ -55,7 +55,7 @@ export default function Cats({
         .map((cat) => (
           <Link
             key={cat["Internal-ID"]}
-            href={`https://www.vokra.ca/testing?cat=${cat["Internal-ID"]}`}
+            href={`https://www.vokra.ca/adopt-a-cat?cat=${cat["Internal-ID"]}`}
           >
             <a target="_top">
               <CatCard cat={cat} key={cat["Internal-ID"]} />

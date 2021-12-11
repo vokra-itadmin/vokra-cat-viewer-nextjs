@@ -24,7 +24,7 @@ export default function Attribute({
           )
           .map((i) => (
             <Link
-              href={`https://www.vokra.ca/testing?cat=${i["Internal-ID"]}`}
+              href={`https://www.vokra.ca/adopt-a-cat?cat=${i["Internal-ID"]}`}
               key={i["Internal-ID"]}
             >
               <a target="_top">
