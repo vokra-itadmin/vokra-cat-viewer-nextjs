@@ -10,7 +10,6 @@
   "dependencies": {
     "is-regex": "^1.1.4",
     "next": "^12.0.7",
-    "next-use-contextual-routing": "^2.0.0",
     "prettier": "^2.5.1",
     "react": "17.0.2",
     "react-dom": "17.0.2",

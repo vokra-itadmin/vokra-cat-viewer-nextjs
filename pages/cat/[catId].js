@@ -58,7 +58,7 @@ const CatPage = ({ cat, cats }) => {
     <div className="w-full flex flex-col items-center">
       <div className="w-full flex justify-center bg-vokra-gray">
         <div className="" style={{ width: "1200px" }}>
-          <CatDetails cat={cat} cats={cats} position="static" url />
+          <CatDetails cat={cat} cats={cats} position="static" />
         </div>
       </div>
     </div>

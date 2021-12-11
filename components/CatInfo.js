@@ -7,7 +7,7 @@ import Attributes from "./Attributes";
 import CatHeader from "./CatHeader";
 import Button from "./Button";
 
-export default function CatInfo({ cats, cat, returnHref, url }) {
+export default function CatInfo({ cats, cat }) {
   return (
     <div className="m-4 grid gap-4 content-start">
       <CatHeader>
@@ -23,18 +23,24 @@ export default function CatInfo({ cats, cat, returnHref, url }) {
           {cat.Breed} {cat.Color} {cat.Pattern === "None" ? "" : cat.Pattern}
         </Details>
       </CatHeader>
-      <Attributes cats={cats} cat={cat} returnHref={returnHref} />
+      <Attributes cats={cats} cat={cat} />
       <CatDesc>{cat.Description}</CatDesc>
       <div className="flex justify-center">
-        <Link href={returnHref === undefined ? "/" : returnHref}>
-          {url ? "" : <Button>Go Back</Button>}
+        <Link href="https://www.vokra.ca/adopt-a-cat">
+          <a target="_top">
+            <Button>Go Back</Button>
+          </a>
         </Link>
         {cat.Adopted ? (
           ""
         ) : (
-          <a href={`https://www.shelterluv.com/matchme/adopt/VOKR-A-${cat.ID}`}>
-            <Button primary>Adopt {cat.Name}!</Button>
-          </a>
+          <Link
+            href={`https://www.shelterluv.com/matchme/adopt/VOKR-A-${cat.ID}`}
+          >
+            <a target="_top">
+              <Button primary>Adopt {cat.Name}!</Button>
+            </a>
+          </Link>
         )}
       </div>
     </div>
