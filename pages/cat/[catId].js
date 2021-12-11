@@ -56,13 +56,11 @@ const CatPage = ({ cat, cats }) => {
   const router = useRouter();
   return (
     <div className="w-full flex flex-col items-center">
-      <Header />
       <div className="w-full flex justify-center bg-vokra-gray">
         <div className="" style={{ width: "1200px" }}>
           <CatDetails cat={cat} cats={cats} position="static" url />
         </div>
       </div>
-      <Footer />
     </div>
   );
 };

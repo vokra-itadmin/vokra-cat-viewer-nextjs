@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { useContextualRouting } from "next-use-contextual-routing";
 
 export default function Attribute({
   attribute,
@@ -8,7 +7,6 @@ export default function Attribute({
   catBondedID,
   extraClassName,
 }) {
-  const { makeContextualHref } = useContextualRouting();
   return (
     <li
       key={attribute["Internal-ID"]}
@@ -26,8 +24,7 @@ export default function Attribute({
           )
           .map((i) => (
             <Link
-              href={makeContextualHref({ catId: i["Internal-ID"] })}
-              as={`/cat/${i["Internal-ID"]}`}
+              href={`https://www.vokra.ca/testing?cat=${i["Internal-ID"]}`}
               key={i["Internal-ID"]}
             >
               <a>
