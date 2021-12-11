@@ -55,7 +55,7 @@ export default function Searchbar({
     },
   });
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-2 p-3 fixed w-full z-20 bg-vokra-gray">
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-2 p-3 w-full z-20 bg-vokra-gray">
       <label className="text-sm text-gray-800">
         Breed
         <Select
