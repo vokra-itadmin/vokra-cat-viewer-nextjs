@@ -56,9 +56,8 @@ export default function Cats({
           <Link
             key={cat["Internal-ID"]}
             href={`https://www.vokra.ca/testing?cat=${cat["Internal-ID"]}`}
-            target="_top"
           >
-            <a>
+            <a target="_top">
               <CatCard cat={cat} key={cat["Internal-ID"]} />
             </a>
           </Link>
