@@ -4,6 +4,23 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import CatCard from "./CatCard";
 
+const convertAge = (age) => {
+  if (age < 12) {
+    return "Kitten (< 1 year)";
+  }
+  if (age < 96) {
+    return "Adult (1-8 years)";
+  }
+  return "Senior (8+ years)";
+};
+const compareAttributes = (attributesParam) =>
+  attributes.every((attribute) =>
+    attributesParam
+      .filter((i) => i.Publish === "Yes")
+      .map((i) => i.AttributeName)
+      .includes(attribute.value)
+  );
+
 export default function Cats({
   cats,
   breeds,
@@ -14,22 +31,6 @@ export default function Cats({
   name,
 }) {
   const router = useRouter();
-  const convertAge = (age) => {
-    if (age < 12) {
-      return "Kitten (< 1 year)";
-    }
-    if (age < 96) {
-      return "Adult (1-8 years)";
-    }
-    return "Senior (8+ years)";
-  };
-  const compareAttributes = (attributesParam) =>
-    attributes.every((attribute) =>
-      attributesParam
-        .filter((i) => i.Publish === "Yes")
-        .map((i) => i.AttributeName)
-        .includes(attribute.value)
-    );
   return (
     <div className={`grid md:grid-cols-2 md:p-4 gap-6 h-main bg-vokra-gray`}>
       {cats
