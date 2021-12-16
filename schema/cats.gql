@@ -154,4 +154,10 @@ input CatInput {
 
 type Query {
   allCats: [Cat!]
+  findCatByInternalId(InternalID: String): Cat
+}
+
+type Mutation {
+  updateCatByInternalId(InternalID: String, updatedCat: CatInput): Cat
+    @resolver(name: "update_cat_internal_id")
 }
