@@ -161,3 +161,18 @@ type Mutation {
   updateCatByInternalId(InternalID: String, updatedCat: CatInput): Cat
     @resolver(name: "update_cat_internal_id")
 }
+
+type Error @embedded {
+  type: String
+  cat: String
+  content: String
+}
+
+type Event {
+  since: Int
+  startTime: Int
+  endTime: Int
+  tries: Int
+  successes: Int
+  errors: [Error]
+}

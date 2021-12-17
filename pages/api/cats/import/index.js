@@ -10,7 +10,7 @@ const parseInternalIdResp = (resp) => {
 
 export default async function handler(req, res) {
   const { since } = req.body;
-  const start_time = Math.floor(Date.now() / 1000);
+  const startTime = Math.floor(Date.now() / 1000);
   const cats = await fetchCats(FETCH_URL, "", since);
   let promises = [];
   let errors = [];
@@ -22,7 +22,11 @@ export default async function handler(req, res) {
     promises.push(findCat(cat["Internal-ID"]));
     if (promises.length === 100 || promises.length === cats.length - count) {
       const resp = await Promise.all(promises).catch((err) => {
-        errors.push({ type: "promise", reason: err });
+        errors.push({
+          type: "gql",
+          cat: cat.InternalID,
+          content: JSON.stringify(err),
+        });
         console.error(err);
       });
 
@@ -30,9 +34,9 @@ export default async function handler(req, res) {
         for (let element of resp) {
           if (!element.findCatByInternalId) {
             errors.push({
+              type: "gql",
               cat: cat.InternalID,
-              error: "Unknown error during cat create/add",
-              response: element,
+              content: "Unknown error during findCat",
             });
           }
         }
@@ -59,13 +63,17 @@ export default async function handler(req, res) {
       cat.Attributes = fixedAttributes;
     }
     if (found.includes(cat.InternalID)) {
-      promises.push(updateCat(cat.InternalID, cat));
+      promises.push(updateCat(/*cat.InternalID,*/ cat));
     } else {
       promises.push(createCat(cat));
     }
     if (promises.length === 100 || promises.length === cats.length - count) {
       const resp = await Promise.all(promises).catch((err) => {
-        errors.push({ type: "promise", reason: err });
+        errors.push({
+          type: "gql",
+          cat: cat.InternalID,
+          content: JSON.stringify(err),
+        });
         console.error(err);
       });
 
@@ -75,9 +83,9 @@ export default async function handler(req, res) {
             successes++;
           } else {
             errors.push({
+              type: "gql",
               cat: cat.InternalID,
-              error: "Unknown error during cat create/add",
-              response: element,
+              content: "Unknown error during cat create/update",
             });
           }
         }
@@ -89,9 +97,9 @@ export default async function handler(req, res) {
   }
   res.status(200).json({
     since: since,
-    start_time: start_time,
-    end_time: Math.floor(Date.now() / 1000),
-    trys: cats.length,
+    startTime: startTime,
+    endTime: Math.floor(Date.now() / 1000),
+    tries: cats.length,
     successes: successes,
     errors: errors,
   });
