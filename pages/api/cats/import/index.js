@@ -68,6 +68,7 @@ export default async function handler(req, res) {
         errors.push({ type: "promise", reason: err });
         console.error(err);
       });
+
       if (resp) {
         for (let element of resp) {
           if (element.updateCatByInternalId) {
