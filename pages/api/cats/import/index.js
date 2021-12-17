@@ -1,11 +1,5 @@
 import { fetchCats } from "../../../../lib/api";
-import {
-  listCats,
-  createCatEntry,
-  findCat,
-  updateCat,
-  listInternalIds,
-} from "../../../../lib/fauna";
+import { createCat, findCat, updateCat } from "../../../../lib/fauna";
 import FETCH_URL from "../../../../config/api";
 
 const parseInternalIdResp = (resp) => {
@@ -14,60 +8,82 @@ const parseInternalIdResp = (resp) => {
     .map((element) => element.findCatByInternalId.InternalID);
 };
 
-const handleFoundInternalIdResp = async (found, promises) => {
-  const resp = await Promise.all(promises);
-  found = found.concat(parseInternalIdResp(resp));
-  promises = [];
-};
-
 export default async function handler(req, res) {
   const { since } = req.body;
+  const start_time = Math.floor(Date.now() / 1000);
   const cats = await fetchCats(FETCH_URL, "", since);
   let promises = [];
   let errors = [];
   let found = [];
+  let successes = 0;
   let count = 0;
+
   for (let cat of cats) {
     promises.push(findCat(cat["Internal-ID"]));
-    if (promises.length === 100) {
-      const resp = await Promise.all(promises);
-      found = found.concat(parseInternalIdResp(resp));
-      promises = [];
-    }
-  }
-  const resp = await Promise.all(promises);
-  found = found.concat(parseInternalIdResp(resp));
-  promises = [];
-  for (let cat of cats) {
-    count++;
-    if (found.includes(cat.InternalID)) {
-      promises.push(
-        fetch("http://localhost:3000/api/cats", {
-          method: "PUT",
-          body: JSON.stringify(cat),
-          headers: { "Content-Type": "application/json" },
-        })
+    if (promises.length === 100 || promises.length === cats.length - count) {
+      const resp = await Promise.all(promises).catch((err) =>
+        errors.push({ type: "promise", reason: err })
       );
-    } else {
-      promises.push(
-        fetch("http://localhost:3000/api/cats", {
-          method: "POST",
-          body: JSON.stringify(cat),
-          headers: { "Content-Type": "application/json" },
-        })
-      );
-    }
-    if (promises.length === 100) {
-      const resp = await Promise.all(promises);
 
       for (let el of resp) {
-        if (el.status !== 200) {
-          errors.push({ status: el.status, statusText: el.statusText });
+        if (!el.findCatByInternalId) {
+          errors.push({
+            cat: cat.InternalID,
+            error: "Unknown error during cat create/add",
+          });
+        }
+      }
+
+      found = found.concat(parseInternalIdResp(resp));
+      promises = [];
+      count += 100;
+    }
+  }
+  count = 0;
+  for (let cat of cats) {
+    delete Object.assign(cat, { ["InternalID"]: cat["Internal-ID"] })[
+      "Internal-ID"
+    ];
+    if (cat.Attributes) {
+      const fixedAttributes = cat.Attributes.map((element) => {
+        return {
+          InternalID: element["Internal-ID"],
+          AttributeName: element.AttributeName,
+          Publish: element.Publish,
+        };
+      });
+      cat.Attributes = fixedAttributes;
+    }
+    if (found.includes(cat.InternalID)) {
+      promises.push(updateCat(cat.InternalID, cat));
+    } else {
+      promises.push(createCat(cat));
+    }
+    if (promises.length === 100 || promises.length === cats.length - count) {
+      const resp = await Promise.all(promises).catch((err) =>
+        errors.push({ type: "promise", reason: err })
+      );
+      for (let el of resp) {
+        if (el.updateCatByInternalId) {
+          console.log(el);
+          successes++;
+        } else {
+          errors.push({
+            cat: cat.InternalID,
+            error: "Unknown error during cat create/add",
+          });
         }
       }
       promises = [];
+      count += 100;
     }
-    console.log("count: ", count);
   }
-  res.status(200).json({ errors: errors });
+  res.status(200).json({
+    since: since,
+    start_time: start_time,
+    end_time: Math.floor(Date.now() / 1000),
+    trys: cats.length,
+    successes: successes,
+    errors: errors,
+  });
 }
