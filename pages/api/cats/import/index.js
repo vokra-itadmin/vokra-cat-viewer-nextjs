@@ -30,6 +30,7 @@ export default async function handler(req, res) {
           errors.push({
             cat: cat.InternalID,
             error: "Unknown error during cat create/add",
+            response: el,
           });
         }
       }
@@ -70,6 +71,7 @@ export default async function handler(req, res) {
           errors.push({
             cat: cat.InternalID,
             error: "Unknown error during cat create/add",
+            response: el,
           });
         }
       }
