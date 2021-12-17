@@ -65,7 +65,6 @@ export default async function handler(req, res) {
       );
       for (let el of resp) {
         if (el.updateCatByInternalId) {
-          console.log(el);
           successes++;
         } else {
           errors.push({
