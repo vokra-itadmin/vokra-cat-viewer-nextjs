@@ -21,17 +21,20 @@ export default async function handler(req, res) {
   for (let cat of cats) {
     promises.push(findCat(cat["Internal-ID"]));
     if (promises.length === 100 || promises.length === cats.length - count) {
-      const resp = await Promise.all(promises).catch((err) =>
-        errors.push({ type: "promise", reason: err })
-      );
+      const resp = await Promise.all(promises).catch((err) => {
+        errors.push({ type: "promise", reason: err });
+        console.error(err);
+      });
 
-      for (let el of resp) {
-        if (!el.findCatByInternalId) {
-          errors.push({
-            cat: cat.InternalID,
-            error: "Unknown error during cat create/add",
-            response: el,
-          });
+      if (resp) {
+        for (let element of resp) {
+          if (!element.findCatByInternalId) {
+            errors.push({
+              cat: cat.InternalID,
+              error: "Unknown error during cat create/add",
+              response: element,
+            });
+          }
         }
       }
 
@@ -61,20 +64,24 @@ export default async function handler(req, res) {
       promises.push(createCat(cat));
     }
     if (promises.length === 100 || promises.length === cats.length - count) {
-      const resp = await Promise.all(promises).catch((err) =>
-        errors.push({ type: "promise", reason: err })
-      );
-      for (let el of resp) {
-        if (el.updateCatByInternalId) {
-          successes++;
-        } else {
-          errors.push({
-            cat: cat.InternalID,
-            error: "Unknown error during cat create/add",
-            response: el,
-          });
+      const resp = await Promise.all(promises).catch((err) => {
+        errors.push({ type: "promise", reason: err });
+        console.error(err);
+      });
+      if (resp) {
+        for (let element of resp) {
+          if (element.updateCatByInternalId) {
+            successes++;
+          } else {
+            errors.push({
+              cat: cat.InternalID,
+              error: "Unknown error during cat create/add",
+              response: element,
+            });
+          }
         }
       }
+
       promises = [];
       count += 100;
     }
