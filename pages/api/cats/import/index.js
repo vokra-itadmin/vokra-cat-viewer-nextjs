@@ -63,7 +63,7 @@ export default async function handler(req, res) {
       cat.Attributes = fixedAttributes;
     }
     if (found.includes(cat.InternalID)) {
-      promises.push(updateCat(/*cat.InternalID,*/ cat));
+      promises.push(updateCat(cat.InternalID, cat));
     } else {
       promises.push(createCat(cat));
     }
