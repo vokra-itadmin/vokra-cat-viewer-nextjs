@@ -1,5 +1,10 @@
 import { fetchCats } from "../../../../lib/api";
-import { createCat, findCat, updateCat } from "../../../../lib/fauna";
+import {
+  createCat,
+  findCat,
+  updateCat,
+  getInternalIds,
+} from "../../../../lib/fauna";
 import FETCH_URL from "../../../../config/api";
 
 const parseInternalIdResp = (resp) => {
@@ -18,42 +23,17 @@ export default async function handler(req, res) {
       const cats = await fetchCats(FETCH_URL, "", since);
       let promises = [];
       let errors = [];
-      let found = [];
       let successes = 0;
       let count = 0;
 
-      for (let cat of cats) {
-        promises.push(findCat(cat["Internal-ID"]));
-        if (
-          promises.length === 100 ||
-          promises.length === cats.length - count
-        ) {
-          const resp = await Promise.all(promises).catch((err) => {
-            errors.push({
-              type: "gql",
-              cat: cat["Internal-ID"],
-              content: JSON.stringify(err),
-            });
-            console.error(err);
-          });
+      const internalIds = cats.map((element) => element["Internal-ID"]);
 
-          if (resp) {
-            for (let element of resp) {
-              if (!element.findCatByInternalId) {
-                errors.push({
-                  type: "gql",
-                  cat: cat.InternalID,
-                  content: "Unknown error during findCat",
-                });
-              }
-            }
-          }
-
-          found = found.concat(parseInternalIdResp(resp));
-          promises = [];
-          count += 100;
-        }
-      }
+      const foundResp = await getInternalIds(internalIds).catch((error) =>
+        console.error(error)
+      );
+      const found = foundResp.findCatsByInternalIds.map(
+        (element) => element.InternalID
+      );
       count = 0;
       for (let cat of cats) {
         delete Object.assign(cat, { ["InternalID"]: cat["Internal-ID"] })[
@@ -75,12 +55,12 @@ export default async function handler(req, res) {
           promises.push(createCat(cat));
         }
         if (
-          promises.length === 100 ||
+          promises.length % 100 === 0 ||
           promises.length === cats.length - count
         ) {
-          const resp = await Promise.all(promises).catch((err) => {
+          const resp = await Promise.allSettled(promises).catch((err) => {
             errors.push({
-              type: "gql",
+              type: "promise",
               cat: cat.InternalID,
               content: JSON.stringify(err),
             });
@@ -89,22 +69,22 @@ export default async function handler(req, res) {
 
           if (resp) {
             for (let element of resp) {
-              if (element.updateCatByInternalId) {
+              if (element.status === "fulfilled") {
                 successes++;
               } else {
                 errors.push({
                   type: "gql",
                   cat: cat.InternalID,
-                  content: "Unknown error during cat create/update",
+                  content: JSON.stringify(element.reason),
                 });
               }
             }
           }
-
           promises = [];
           count += 100;
         }
       }
+
       res.status(200).json({
         since: since,
         startTime: startTime,
