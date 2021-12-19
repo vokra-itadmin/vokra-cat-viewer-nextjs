@@ -155,6 +155,8 @@ input CatInput {
 type Query {
   allCats: [Cat!]
   findCatByInternalId(InternalID: String): Cat
+  findCatsByInternalIds(InternalIDs: [String]): [Cat]
+    @resolver(name: "get_cat_internal_ids")
 }
 
 type Mutation {
