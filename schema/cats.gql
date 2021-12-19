@@ -152,6 +152,16 @@ input CatInput {
   Attributes: [AttributeInput]
 }
 
+type CatUpdate {
+  Cat: Cat
+  InternalID: String
+}
+
+input CatUpdateInput {
+  Cat: CatInput
+  InternalID: String
+}
+
 type Query {
   allCats: [Cat!]
   findCatByInternalId(InternalID: String): Cat
@@ -160,8 +170,11 @@ type Query {
 }
 
 type Mutation {
+  createCats(Cats: [CatInput]!): [Cat] @resolver(name: "create_cats")
   updateCatByInternalId(InternalID: String, updatedCat: CatInput): Cat
     @resolver(name: "update_cat_internal_id")
+  updateCatsByInternalIds(Cats: [CatUpdateInput]): [Cat]
+    @resolver(name: "update_cats_internal_ids")
 }
 
 type Error @embedded {
