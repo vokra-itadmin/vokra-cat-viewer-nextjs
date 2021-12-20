@@ -16,10 +16,6 @@ export default async function handler(req, res) {
       const { since } = req.body;
       const startTime = Math.floor(Date.now() / 1000);
       const cats = await fetchCats(FETCH_URL, "", since);
-      let promises = [];
-      let errors = [];
-      let successes = 0;
-      let count = 0;
 
       const internalIds = cats.map((element) => element["Internal-ID"]);
 
@@ -48,9 +44,10 @@ export default async function handler(req, res) {
       const found = foundResp.findCatsByInternalIds.map(
         (element) => element.InternalID
       );
-      count = 0;
+
       const creates = [];
       const updates = [];
+
       for (let i = 0; i < cats.length; i++) {
         if (found.includes(cats[i].InternalID)) {
           updates.push({ InternalID: cats[i].InternalID, Cat: cats[i] });
@@ -58,13 +55,20 @@ export default async function handler(req, res) {
           creates.push(cats[i]);
         }
       }
+
       const batchSize = 200;
+      let promises = [];
+
       for (let i = 0; i < creates.length; i += batchSize) {
         promises.push(createCats(creates.slice(i, i + batchSize)));
       }
       for (let i = 0; i < updates.length; i += batchSize) {
         promises.push(updateCats(updates.slice(i, i + batchSize)));
       }
+
+      let errors = [];
+      let successes = 0;
+
       for (let i = 0; i < promises.length; i += 100) {
         const batch = promises.slice(i, i + 100);
         const resp = await Promise.allSettled(batch).catch((err) => {
