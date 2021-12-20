@@ -37,10 +37,10 @@ export default async function handler(req, res) {
           delete cat.CurrentLocation;
         }
       }
-
       const foundResp = await getInternalIds(internalIds).catch((error) =>
         console.error(error)
       );
+
       const found = foundResp.findCatsByInternalIds.map(
         (element) => element.InternalID
       );
@@ -92,7 +92,6 @@ export default async function handler(req, res) {
           }
         }
       }
-
       res.status(200).json({
         since: since,
         startTime: startTime,
