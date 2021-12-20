@@ -40,14 +40,6 @@ export default async function handler(req, res) {
         if (cat.CurrentLocation === null) {
           delete cat.CurrentLocation;
         }
-        if (cat.AdoptionFeeGroup !== undefined) {
-          if (typeof cat.AdoptionFeeGroup.Discount !== "number") {
-            console.log(
-              "Why isn't this an Int?",
-              cat.AdoptionFeeGroup.Discount
-            );
-          }
-        }
       }
 
       const foundResp = await getInternalIds(internalIds).catch((error) =>
@@ -66,31 +58,27 @@ export default async function handler(req, res) {
           creates.push(cats[i]);
         }
       }
-      console.log("creates.length: ", creates.length);
-      console.log("updates.length: ", updates.length);
-      for (let i = 0; i < creates.length; i += 100) {
-        promises.push(createCats(creates.slice(i, i + 100)));
+      const batchSize = 200;
+      for (let i = 0; i < creates.length; i += batchSize) {
+        promises.push(createCats(creates.slice(i, i + batchSize)));
       }
-      for (let i = 0; i < updates.length; i += 100) {
-        promises.push(updateCats(updates.slice(i, i + 100)));
+      for (let i = 0; i < updates.length; i += batchSize) {
+        promises.push(updateCats(updates.slice(i, i + batchSize)));
       }
-      console.log("promises.length: ", promises.length);
       for (let i = 0; i < promises.length; i += 100) {
-        const resp = await Promise.allSettled(promises.slice(i, i + 100)).catch(
-          (err) => {
-            errors.push({
-              type: "promise",
-              cat: cat.InternalID,
-              content: JSON.stringify(err),
-            });
-            console.error(err);
-          }
-        );
+        const batch = promises.slice(i, i + 100);
+        const resp = await Promise.allSettled(batch).catch((err) => {
+          errors.push({
+            type: "promise",
+            content: JSON.stringify(err),
+          });
+          console.error(err);
+        });
 
         if (resp) {
           for (let element of resp) {
             if (element.status === "fulfilled") {
-              successes++;
+              successes += batch.length;
             } else {
               errors.push({
                 type: "gql",

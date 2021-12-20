@@ -33,7 +33,7 @@ type AdoptionFeeGroup @embedded {
   Id: String
   Name: String
   Price: String
-  Discount: Int
+  Discount: Float
   Tax: Int
 }
 
@@ -110,7 +110,7 @@ input AdoptionFeeGroupInput @embedded {
   Id: String
   Name: String
   Price: String
-  Discount: Int
+  Discount: Float
   Tax: Int
 }
 
