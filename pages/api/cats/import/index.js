@@ -23,13 +23,6 @@ export default async function handler(req, res) {
 
       const internalIds = cats.map((element) => element["Internal-ID"]);
 
-      const foundResp = await getInternalIds(internalIds).catch((error) =>
-        console.error(error)
-      );
-      const found = foundResp.findCatsByInternalIds.map(
-        (element) => element.InternalID
-      );
-      count = 0;
       for (let cat of cats) {
         delete Object.assign(cat, { ["InternalID"]: cat["Internal-ID"] })[
           "Internal-ID"
@@ -44,39 +37,67 @@ export default async function handler(req, res) {
           });
           cat.Attributes = fixedAttributes;
         }
-        if (found.includes(cat.InternalID)) {
-          promises.push(updateCats([{ InternalID: cat.InternalID, Cat: cat }]));
-        } else {
-          promises.push(createCats([cat]));
+        if (cat.CurrentLocation === null) {
+          delete cat.CurrentLocation;
         }
-        if (
-          promises.length % 100 === 0 ||
-          promises.length === cats.length - count
-        ) {
-          const resp = await Promise.allSettled(promises).catch((err) => {
+        if (cat.AdoptionFeeGroup !== undefined) {
+          if (typeof cat.AdoptionFeeGroup.Discount !== "number") {
+            console.log(
+              "Why isn't this an Int?",
+              cat.AdoptionFeeGroup.Discount
+            );
+          }
+        }
+      }
+
+      const foundResp = await getInternalIds(internalIds).catch((error) =>
+        console.error(error)
+      );
+      const found = foundResp.findCatsByInternalIds.map(
+        (element) => element.InternalID
+      );
+      count = 0;
+      const creates = [];
+      const updates = [];
+      for (let i = 0; i < cats.length; i++) {
+        if (found.includes(cats[i].InternalID)) {
+          updates.push({ InternalID: cats[i].InternalID, Cat: cats[i] });
+        } else {
+          creates.push(cats[i]);
+        }
+      }
+      console.log("creates.length: ", creates.length);
+      console.log("updates.length: ", updates.length);
+      for (let i = 0; i < creates.length; i += 100) {
+        promises.push(createCats(creates.slice(i, i + 100)));
+      }
+      for (let i = 0; i < updates.length; i += 100) {
+        promises.push(updateCats(updates.slice(i, i + 100)));
+      }
+      console.log("promises.length: ", promises.length);
+      for (let i = 0; i < promises.length; i += 100) {
+        const resp = await Promise.allSettled(promises.slice(i, i + 100)).catch(
+          (err) => {
             errors.push({
               type: "promise",
               cat: cat.InternalID,
               content: JSON.stringify(err),
             });
             console.error(err);
-          });
+          }
+        );
 
-          if (resp) {
-            for (let element of resp) {
-              if (element.status === "fulfilled") {
-                successes++;
-              } else {
-                errors.push({
-                  type: "gql",
-                  cat: cat.InternalID,
-                  content: JSON.stringify(element.reason),
-                });
-              }
+        if (resp) {
+          for (let element of resp) {
+            if (element.status === "fulfilled") {
+              successes++;
+            } else {
+              errors.push({
+                type: "gql",
+                content: JSON.stringify(element.reason),
+              });
             }
           }
-          promises = [];
-          count += 100;
         }
       }
 
