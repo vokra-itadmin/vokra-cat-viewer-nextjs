@@ -1,10 +1,5 @@
 import { fetchCats } from "../../../../lib/api";
-import {
-  createCat,
-  findCat,
-  updateCat,
-  getInternalIds,
-} from "../../../../lib/fauna";
+import { createCats, updateCats, getInternalIds } from "../../../../lib/fauna";
 import FETCH_URL from "../../../../config/api";
 
 const parseInternalIdResp = (resp) => {
@@ -50,9 +45,9 @@ export default async function handler(req, res) {
           cat.Attributes = fixedAttributes;
         }
         if (found.includes(cat.InternalID)) {
-          promises.push(updateCat(cat.InternalID, cat));
+          promises.push(updateCats([{ InternalID: cat.InternalID, Cat: cat }]));
         } else {
-          promises.push(createCat(cat));
+          promises.push(createCats([cat]));
         }
         if (
           promises.length % 100 === 0 ||
