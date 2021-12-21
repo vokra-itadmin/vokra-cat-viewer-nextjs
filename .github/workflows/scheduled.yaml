@@ -9,5 +9,5 @@ jobs:
       - name: Fifth minute cron job
         run: |
           curl --request GET \
-          --url 'https://cat-viewer.vokra.com/api/cats/import' \
+          --url 'https://cat-viewer.vokra.ca/api/cats/import' \
           --header 'ACTION_KEY: ${{ secrets.APP_KEY }}'
