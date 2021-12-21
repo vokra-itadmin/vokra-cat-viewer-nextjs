@@ -41,15 +41,17 @@ export default async function handler(req, res) {
         console.error(error)
       );
 
-      const found = foundResp.findCatsByInternalIds.map(
-        (element) => element.InternalID
+      const found = new Set();
+
+      foundResp.findCatsByInternalIds.forEach((element) =>
+        found.add(element.InternalID)
       );
 
       const creates = [];
       const updates = [];
 
       for (let i = 0; i < cats.length; i++) {
-        if (found.includes(cats[i].InternalID)) {
+        if (found.has(cats[i].InternalID)) {
           updates.push({ InternalID: cats[i].InternalID, Cat: cats[i] });
         } else {
           creates.push(cats[i]);
@@ -71,12 +73,12 @@ export default async function handler(req, res) {
 
       for (let i = 0; i < promises.length; i += 100) {
         const batch = promises.slice(i, i + 100);
-        const resp = await Promise.allSettled(batch).catch((err) => {
+        const resp = await Promise.allSettled(batch).catch((error) => {
           errors.push({
             type: "promise",
-            content: JSON.stringify(err),
+            content: JSON.stringify(error),
           });
-          console.error(err);
+          console.error(error);
         });
 
         if (resp) {
