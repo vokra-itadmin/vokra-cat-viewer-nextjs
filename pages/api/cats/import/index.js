@@ -1,5 +1,10 @@
 import { fetchCats } from "../../../../lib/api";
-import { createCats, updateCats, getInternalIds } from "../../../../lib/fauna";
+import {
+  createCats,
+  updateCats,
+  getInternalIds,
+  createEvent,
+} from "../../../../lib/fauna";
 import FETCH_URL from "../../../../config/api";
 
 const parseInternalIdResp = (resp) => {
@@ -94,14 +99,15 @@ export default async function handler(req, res) {
           }
         }
       }
-      res.status(200).json({
-        since: since,
-        startTime: startTime,
+      const respEvent = await createEvent({
+        since,
+        startTime,
         endTime: Math.floor(Date.now() / 1000),
         tries: cats.length,
-        successes: successes,
-        errors: errors,
+        successes,
+        errors,
       });
+      res.status(200).json(respEvent.createEvent);
     } else {
       res.status(401);
     }
