@@ -167,6 +167,10 @@ type Query {
   findCatByInternalId(InternalID: String): Cat
   findCatsByInternalIds(InternalIDs: [String]): [Cat]
     @resolver(name: "get_cat_internal_ids")
+  findCatsByAttributesAny(Attributes: [AttributeInput!]): [Cat]
+    @resolver(name: "get_cat_attributes_any")
+  findCatsByAttributesAll(Attributes: [AttributeInput!]): [Cat]
+    @resolver(name: "get_cat_attributes_all")
   allEvents: [Event!]
   getLatestEventTimestamp: Int @resolver(name: "get_latest_event_timestamp")
 }
