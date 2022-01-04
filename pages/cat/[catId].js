@@ -1,9 +1,6 @@
 import { useRouter } from "next/router";
 import { returnCat, returnCats, returnAdoptedCats } from "../../lib/api";
 import CatDetails from "../../components/CatDetails";
-import Header from "../../components/Header";
-import Footer from "../../components/Footer";
-import FETCH_URL from "../../config/api";
 
 export async function getStaticPaths() {
   let cats = [];

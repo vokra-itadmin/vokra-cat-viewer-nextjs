@@ -172,6 +172,8 @@ type Query {
   findCatsByAttributesAll(Attributes: [AttributeInput!]): [Cat]
     @resolver(name: "get_cat_attributes_all")
   findCatsByStatus(Status: String): [Cat]
+  findCatsByStatuses(Statuses: [String]): [Cat]
+    @resolver(name: "get_cats_by_statuses")
   allEvents: [Event!]
   getLatestEventTimestamp: Int @resolver(name: "get_latest_event_timestamp")
 }
