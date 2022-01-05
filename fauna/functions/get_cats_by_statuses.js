@@ -16,7 +16,7 @@ export default {
                 q.Lambda("i", q.Match(q.Index("findCatsByStatus"), q.Var("i")))
               )
             ),
-            { size: 100000 }
+            { size: 1000, before: null }
           )
         ),
         q.Lambda("j", q.Get(q.Var("j")))
