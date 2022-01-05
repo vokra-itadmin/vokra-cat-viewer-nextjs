@@ -5,7 +5,7 @@ import Layout from "../components/Layout";
 
 export async function getStaticProps() {
   const resp = await getPublishableCats();
-  const cats = resp.findCatsByStatus.data;
+  const cats = resp.findCatsByStatuses;
   return {
     props: {
       cats,
