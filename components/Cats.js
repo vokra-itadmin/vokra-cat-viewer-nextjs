@@ -24,7 +24,6 @@ export default function Cats({
   name,
 }) {
   const router = useRouter();
-
   const compareAttributes = (attributesParam) =>
     attributes.every((attribute) =>
       attributesParam
@@ -32,7 +31,6 @@ export default function Cats({
         .map((i) => i.AttributeName)
         .includes(attribute.value)
     );
-
   return (
     <div
       className={`grid md:grid-cols-2 md:top-36 top-52 md:p-4 gap-6 overflow-y-scroll h-main fixed bg-vokra-gray`}
@@ -57,11 +55,11 @@ export default function Cats({
         )
         .map((cat) => (
           <Link
-            key={cat["Internal-ID"]}
-            href={`https://www.vokra.ca/adopt-a-cat?cat=${cat["Internal-ID"]}`}
+            key={cat["InternalID"]}
+            href={`https://www.vokra.ca/adopt-a-cat?cat=${cat["InternalID"]}`}
           >
             <a target="_top">
-              <CatCard cat={cat} key={cat["Internal-ID"]} />
+              <CatCard cat={cat} key={cat["InternalID"]} />
             </a>
           </Link>
         ))}

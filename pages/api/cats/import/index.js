@@ -8,12 +8,6 @@ import {
 } from "../../../../lib/fauna";
 import FETCH_URL from "../../../../config/api";
 
-const parseInternalIdResp = (resp) => {
-  return resp
-    .filter((element) => element.findCatByInternalId !== null)
-    .map((element) => element.findCatByInternalId.InternalID);
-};
-
 export default async function handler(req, res) {
   try {
     if (!req.headers.action_key) {

@@ -1,22 +1,16 @@
 import { useRouter } from "next/router";
-import { returnCat, returnCats, returnAdoptedCats } from "../../lib/api";
+import {
+  getPublishableAndAdoptedCatsIds,
+  getCatByInternalId,
+} from "../../lib/fauna";
 import CatDetails from "../../components/CatDetails";
-import Header from "../../components/Header";
-import Footer from "../../components/Footer";
-import FETCH_URL from "../../config/api";
 
 export async function getStaticPaths() {
-  let cats = [];
-  const promises = await Promise.all([returnCats(), returnAdoptedCats()]).then(
-    (res) => {
-      cats = res[0].concat(res[1]);
-    }
-  );
-
+  const cats = await getPublishableAndAdoptedCatsIds();
   return {
-    paths: cats.map((cat) => ({
+    paths: cats.findCatsByStatuses.map((cat) => ({
       params: {
-        catId: cat["Internal-ID"],
+        catId: cat.InternalID,
       },
     })),
     fallback: "blocking",
@@ -25,7 +19,8 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({ params }) {
   let cats = [];
-  const cat = await returnCat(params.catId);
+  const resp = await getCatByInternalId(params.catId);
+  const cat = resp.findCatByInternalId;
   const bonded = cat.Attributes.some(
     (element) => element.AttributeName === "Bonded"
   );
@@ -34,11 +29,11 @@ export async function getStaticProps({ params }) {
       (element) => element.Type === "Visibility"
     );
     if (bondedID.length > 0) {
-      const promises = bondedID.map((cat) => returnCat(cat.IdValue));
+      const promises = bondedID.map((cat) => getCatByInternalId(cat.IdValue));
       const catBonded = await Promise.all(promises);
       catBonded.forEach((cat) => {
-        if (!cat.hasOwnProperty("error_message")) {
-          cats.push(cat);
+        if (cat.findCatByInternalId !== null) {
+          cats.push(cat.findCatByInternalId);
         }
       });
     }
