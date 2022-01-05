@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "fauna": "fgu"
+    "fauna-prod": "fgu --envPath .env.production.local",
+    "fauna-dev": "fgu --envPath .env.development.local"
   },
   "dependencies": {
     "faunadb": "^4.4.1",
