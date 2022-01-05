@@ -17,8 +17,7 @@ export default async function handler(req, res) {
         const startTime = Math.floor(Date.now() / 1000);
 
         let since;
-
-        if (since) {
+        if (req.body.since) {
           since = req.body.since;
         } else {
           const resp = await getLatestEventTimestamp();
