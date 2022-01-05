@@ -8,7 +8,10 @@ export default function CatCarousel({ cat }) {
   return (
     <div className="lg:p-4">
       <div className="relative">
-        {cat.Status === "Healthy In Home" ? (
+        {cat.Status === "Healthy In Home" ||
+        cat.Status === "Adoptions: Contract and Payment (Not on Website)" ||
+        cat.Status === "Adoptions: Viewing (Not on Website)" ||
+        cat.Status === "Adoptions: Available (Not on Website)" ? (
           <Ribbon color="bg-vokra-dark">Adopted!</Ribbon>
         ) : (
           ""
