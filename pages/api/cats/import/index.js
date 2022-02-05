@@ -8,6 +8,12 @@ import {
 } from "../../../../lib/fauna";
 import FETCH_URL from "../../../../config/api";
 
+const parseInternalIdResp = (resp) => {
+  return resp
+    .filter((element) => element.findCatByInternalId !== null)
+    .map((element) => element.findCatByInternalId.InternalID);
+};
+
 export default async function handler(req, res) {
   try {
     if (!req.headers.action_key) {
@@ -17,7 +23,8 @@ export default async function handler(req, res) {
         const startTime = Math.floor(Date.now() / 1000);
 
         let since;
-        if (req.body.since) {
+
+        if (since) {
           since = req.body.since;
         } else {
           const resp = await getLatestEventTimestamp();

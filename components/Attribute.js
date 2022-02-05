@@ -9,7 +9,7 @@ export default function Attribute({
 }) {
   return (
     <li
-      key={attribute["InternalID"]}
+      key={attribute["Internal-ID"]}
       className={`text-sm rounded-sm m-0.5 px-2 py-1 mt-2 ${extraClassName}`}
     >
       {attribute.AttributeName === "Bonded"
@@ -19,13 +19,13 @@ export default function Attribute({
         {cats
           .filter(
             (i) =>
-              catBondedID(i).some((j) => j === cat["InternalID"]) &&
+              catBondedID(i).some((j) => j === cat["Internal-ID"]) &&
               attribute.AttributeName === "Bonded"
           )
           .map((i) => (
             <Link
-              href={`https://www.vokra.ca/adopt-a-cat?cat=${i["InternalID"]}`}
-              key={i["InternalID"]}
+              href={`https://www.vokra.ca/adopt-a-cat?cat=${i["Internal-ID"]}`}
+              key={i["Internal-ID"]}
             >
               <a target="_top">
                 {" "}
