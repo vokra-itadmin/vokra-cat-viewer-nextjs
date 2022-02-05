@@ -19,7 +19,7 @@ export async function getStaticPaths() {
         catId: cat["Internal-ID"],
       },
     })),
-    fallback: "blocking",
+    fallback: false,
   };
 }
 
