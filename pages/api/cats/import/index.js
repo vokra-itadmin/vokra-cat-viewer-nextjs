@@ -1,10 +1,5 @@
 import { fetchCats } from "../../../../lib/api";
-import {
-  createCats,
-  updateCats,
-  getInternalIds,
-  createEvent,
-} from "../../../../lib/fauna";
+import { createCat, findCat, updateCat } from "../../../../lib/fauna";
 import FETCH_URL from "../../../../config/api";
 
 const parseInternalIdResp = (resp) => {
@@ -14,102 +9,89 @@ const parseInternalIdResp = (resp) => {
 };
 
 export default async function handler(req, res) {
-  if (!req.headers.action_key) {
-    res.status(401).json("Access key required");
-  } else {
-    if (req.headers.action_key === process.env.APP_KEY) {
-      const { since } = req.body;
-      const startTime = Math.floor(Date.now() / 1000);
-      const cats = await fetchCats(FETCH_URL, "", since);
+  const { since } = req.body;
+  const start_time = Math.floor(Date.now() / 1000);
+  const cats = await fetchCats(FETCH_URL, "", since);
+  let promises = [];
+  let errors = [];
+  let found = [];
+  let successes = 0;
+  let count = 0;
 
-      const internalIds = cats.map((element) => element["Internal-ID"]);
+  for (let cat of cats) {
+    promises.push(findCat(cat["Internal-ID"]));
+    if (promises.length === 100 || promises.length === cats.length - count) {
+      const resp = await Promise.all(promises).catch((err) => {
+        errors.push({ type: "promise", reason: err });
+        console.error(err);
+      });
 
-      for (let cat of cats) {
-        delete Object.assign(cat, { ["InternalID"]: cat["Internal-ID"] })[
-          "Internal-ID"
-        ];
-        if (cat.Attributes) {
-          const fixedAttributes = cat.Attributes.map((element) => {
-            return {
-              InternalID: element["Internal-ID"],
-              AttributeName: element.AttributeName,
-              Publish: element.Publish,
-            };
-          });
-          cat.Attributes = fixedAttributes;
-        }
-        if (cat.CurrentLocation === null) {
-          delete cat.CurrentLocation;
-        }
-      }
-      const foundResp = await getInternalIds(internalIds).catch((error) =>
-        console.error(error)
-      );
-
-      const found = new Set();
-
-      foundResp.findCatsByInternalIds.forEach((element) =>
-        found.add(element.InternalID)
-      );
-
-      const creates = [];
-      const updates = [];
-
-      for (let i = 0; i < cats.length; i++) {
-        if (found.has(cats[i].InternalID)) {
-          updates.push({ InternalID: cats[i].InternalID, Cat: cats[i] });
-        } else {
-          creates.push(cats[i]);
-        }
-      }
-
-      const batchSize = 200;
-      let promises = [];
-
-      for (let i = 0; i < creates.length; i += batchSize) {
-        promises.push(createCats(creates.slice(i, i + batchSize)));
-      }
-      for (let i = 0; i < updates.length; i += batchSize) {
-        promises.push(updateCats(updates.slice(i, i + batchSize)));
-      }
-
-      let errors = [];
-      let successes = 0;
-
-      for (let i = 0; i < promises.length; i += 100) {
-        const batch = promises.slice(i, i + 100);
-        const resp = await Promise.allSettled(batch).catch((error) => {
-          errors.push({
-            type: "promise",
-            content: JSON.stringify(error),
-          });
-          console.error(error);
-        });
-
-        if (resp) {
-          for (let element of resp) {
-            if (element.status === "fulfilled") {
-              successes += batch.length;
-            } else {
-              errors.push({
-                type: "gql",
-                content: JSON.stringify(element.reason),
-              });
-            }
+      if (resp) {
+        for (let element of resp) {
+          if (!element.findCatByInternalId) {
+            errors.push({
+              cat: cat.InternalID,
+              error: "Unknown error during cat create/add",
+              response: element,
+            });
           }
         }
       }
-      const respEvent = await createEvent({
-        since,
-        startTime,
-        endTime: Math.floor(Date.now() / 1000),
-        tries: cats.length,
-        successes,
-        errors,
-      });
-      res.status(200).json(respEvent.createEvent);
-    } else {
-      res.status(401);
+
+      found = found.concat(parseInternalIdResp(resp));
+      promises = [];
+      count += 100;
     }
   }
+  count = 0;
+  for (let cat of cats) {
+    delete Object.assign(cat, { ["InternalID"]: cat["Internal-ID"] })[
+      "Internal-ID"
+    ];
+    if (cat.Attributes) {
+      const fixedAttributes = cat.Attributes.map((element) => {
+        return {
+          InternalID: element["Internal-ID"],
+          AttributeName: element.AttributeName,
+          Publish: element.Publish,
+        };
+      });
+      cat.Attributes = fixedAttributes;
+    }
+    if (found.includes(cat.InternalID)) {
+      promises.push(updateCat(cat.InternalID, cat));
+    } else {
+      promises.push(createCat(cat));
+    }
+    if (promises.length === 100 || promises.length === cats.length - count) {
+      const resp = await Promise.all(promises).catch((err) => {
+        errors.push({ type: "promise", reason: err });
+        console.error(err);
+      });
+      if (resp) {
+        for (let element of resp) {
+          if (element.updateCatByInternalId) {
+            successes++;
+          } else {
+            errors.push({
+              cat: cat.InternalID,
+              error: "Unknown error during cat create/add",
+              response: element,
+            });
+          }
+        }
+      }
+
+      promises = [];
+      count += 100;
+    }
+  }
+  res.status(200).json({
+    since: since,
+    start_time: start_time,
+    end_time: Math.floor(Date.now() / 1000),
+    trys: cats.length,
+    successes: successes,
+    errors: errors,
+  });
 }

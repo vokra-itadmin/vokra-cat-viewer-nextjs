@@ -33,7 +33,7 @@ type AdoptionFeeGroup @embedded {
   Id: String
   Name: String
   Price: String
-  Discount: Float
+  Discount: Int
   Tax: Int
 }
 
@@ -110,7 +110,7 @@ input AdoptionFeeGroupInput @embedded {
   Id: String
   Name: String
   Price: String
-  Discount: Float
+  Discount: Int
   Tax: Int
 }
 
@@ -152,42 +152,12 @@ input CatInput {
   Attributes: [AttributeInput]
 }
 
-type CatUpdate {
-  Cat: Cat
-  InternalID: String
-}
-
-input CatUpdateInput {
-  Cat: CatInput
-  InternalID: String
-}
-
 type Query {
   allCats: [Cat!]
   findCatByInternalId(InternalID: String): Cat
-  findCatsByInternalIds(InternalIDs: [String]): [Cat]
-    @resolver(name: "get_cat_internal_ids")
 }
 
 type Mutation {
-  createCats(Cats: [CatInput]!): [Cat] @resolver(name: "create_cats")
   updateCatByInternalId(InternalID: String, updatedCat: CatInput): Cat
     @resolver(name: "update_cat_internal_id")
-  updateCatsByInternalIds(Cats: [CatUpdateInput]): [Cat]
-    @resolver(name: "update_cats_internal_ids")
-}
-
-type Error @embedded {
-  type: String
-  cat: String
-  content: String
-}
-
-type Event {
-  since: Int
-  startTime: Int
-  endTime: Int
-  tries: Int
-  successes: Int
-  errors: [Error]
 }
