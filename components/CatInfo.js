@@ -35,7 +35,7 @@ export default function CatInfo({ cats, cat }) {
           ""
         ) : (
           <Link
-            href={`https://www.shelterluv.com/matchme/adopt/VOKR-A-${cat.ID}`}
+            href={`https://new.shelterluv.com/matchme/adopt/VOKR-A-${cat.ID}`}
           >
             <a target="_top">
               <Button primary>Adopt {cat.Name}!</Button>
