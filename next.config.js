@@ -1,6 +1,6 @@
 module.exports = {
   images: {
-    domains: ["www.shelterluv.com"],
+    domains: ["new.shelterluv.com"],
   },
   i18n: {
     locales: ["en"],
