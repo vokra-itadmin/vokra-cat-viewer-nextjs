@@ -1,6 +1,6 @@
 module.exports = {
   images: {
-    domains: ["new.shelterluv.com"],
+    domains: ["sl-v2-prod.s3.us-west-2.amazonaws.com/profile-pictures"],
   },
   i18n: {
     locales: ["en"],
